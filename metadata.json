@@ -1,6 +1,6 @@
 {
   "name": "Wahla Exchange LTD",
-  "description": "All-in-one currency exchange counter, mobile phone trade-in & store, and mobile accessories hub for Wahla Exchange LTD.",
+  "description": "Zero-Commission Foreign Currency Exchange & Premium Mobile Tech Counter in Glasgow, UK",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

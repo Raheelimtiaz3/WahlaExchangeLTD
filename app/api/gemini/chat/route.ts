@@ -1,6 +1,8 @@
 import { GoogleGenAI } from '@google/genai';
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   try {
     const { message, history } = await req.json();
@@ -40,7 +42,6 @@ Tone & Persona:
 - Provide direct answers to customer questions regarding currency rates, mobile phone specs, trade-in advice, store location in Glasgow, or travel advice.
 - When helpful, encourage reserving currency vouchers or contacting our WhatsApp (+44 1412660379) for instant support.`;
 
-    // Construct history / conversation prompt context
     let formattedPrompt = message;
     if (history && Array.isArray(history) && history.length > 0) {
       const pastContext = history
