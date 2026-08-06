@@ -1,158 +1,87 @@
 'use client';
 
-import React, { useState } from 'react';
-import Navbar from '@/components/Navbar';
-import HeroSection from '@/components/HeroSection';
-import CurrencyConverter from '@/components/CurrencyConverter';
-import RatesTable from '@/components/RatesTable';
-import CurrencyChartModal from '@/components/CurrencyChartModal';
-import CurrencyReserveModal from '@/components/CurrencyReserveModal';
-import RateAlertModal from '@/components/RateAlertModal';
-import PhonesCatalog from '@/components/PhonesCatalog';
-import PhoneTradeInCalculator from '@/components/PhoneTradeInCalculator';
-import AccessoriesShop from '@/components/AccessoriesShop';
-import AiAdvisor from '@/components/AiAdvisor';
-import StoreLocator from '@/components/StoreLocator';
-import CartDrawer from '@/components/CartDrawer';
-import ReceiptModal from '@/components/ReceiptModal';
-import ReservationsModal from '@/components/ReservationsModal';
-import Footer from '@/components/Footer';
-import RightCornerWidgets from '@/components/RightCornerWidgets';
-import MobileBottomNav from '@/components/MobileBottomNav';
+import React, { useState, useEffect } from 'react';
+import { Navbar } from '@/components/Navbar';
+import { RatesTicker } from '@/components/RatesTicker';
+import { HeroSection } from '@/components/HeroSection';
+import { CurrencyConverter } from '@/components/CurrencyConverter';
+import { RatesTable } from '@/components/RatesTable';
+import { PhonesCatalog } from '@/components/PhonesCatalog';
+import { AccessoriesShop } from '@/components/AccessoriesShop';
+import { PhoneTradeInCalculator } from '@/components/PhoneTradeInCalculator';
+import { AiAdvisor } from '@/components/AiAdvisor';
+import { StoreInfoFooter } from '@/components/StoreInfoFooter';
+import { CartDrawer } from '@/components/CartDrawer';
+import { CurrencyReserveModal } from '@/components/CurrencyReserveModal';
+import { ReservationsModal } from '@/components/ReservationsModal';
 
-import { Currency, PhoneProduct, AccessoryProduct, CartItem, CurrencyReservation, TradeInQuote, StoreBranch } from '@/lib/types';
 import { INITIAL_CURRENCIES } from '@/lib/currency-data';
-import { CheckCircle2, Ticket, Sparkles } from 'lucide-react';
+import { FEATURED_PRODUCTS } from '@/lib/product-data';
+import { Currency, CartItem, ReservationVoucher } from '@/lib/types';
+import { MessageCircle, Sparkles } from 'lucide-react';
 
 export default function HomePage() {
-  const [activeTab, setActiveTab] = useState<string>('currency');
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [currencies, setCurrencies] = useState<Currency[]>(INITIAL_CURRENCIES);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [vouchers, setVouchers] = useState<ReservationVoucher[]>([]);
 
-  // Cart & Reservations
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: 'cart-init-1',
-      productId: 'acc-1',
-      title: '65W GaN Dual USB-C Fast Travel Charger',
-      subtitle: 'Includes US/EU/UK/AU Wall Plugs',
-      price: 34.99,
-      type: 'accessory',
-      image: 'https://picsum.photos/seed/charger65w/600/600',
-      quantity: 1,
-    },
-    {
-      id: 'cart-init-2',
-      productId: 'acc-3',
-      title: 'Global Travel eSIM Pass (10GB 5G Data)',
-      subtitle: 'Instant QR Email Activation',
-      price: 19.99,
-      type: 'accessory',
-      image: 'https://picsum.photos/seed/esimtravel/600/600',
-      quantity: 1,
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isVouchersOpen, setIsVouchersOpen] = useState(false);
+
+  // Reserve modal state
+  const [selectedReserveCurrency, setSelectedReserveCurrency] = useState<Currency | null>(null);
+  const [reserveForeignAmount, setReserveForeignAmount] = useState<number | undefined>(undefined);
+  const [reserveCostGbp, setReserveCostGbp] = useState<number | undefined>(undefined);
+
+  // Load cart and vouchers from localStorage on client side
+  useEffect(() => {
+    try {
+      const savedCart = localStorage.getItem('wahla_cart');
+      if (savedCart) setCartItems(JSON.parse(savedCart));
+
+      const savedVouchers = localStorage.getItem('wahla_vouchers');
+      if (savedVouchers) setVouchers(JSON.parse(savedVouchers));
+    } catch (e) {
+      console.error('Failed to load from local storage:', e);
     }
-  ]);
+  }, []);
 
-  const [reservations, setReservations] = useState<CurrencyReservation[]>([
-    {
-      id: 'VCH-849102',
-      currencyCode: 'EUR',
-      currencyName: 'Euro',
-      flag: '🇪🇺',
-      amountForeign: 459.00,
-      amountLocal: 500,
-      type: 'buy',
-      exchangeRate: 0.918,
-      pickupLocation: 'Terminal 1 International Airport Counter',
-      pickupDate: '2026-08-05',
-      pickupTime: '24/7 Airport Express',
-      customerName: 'Raheel Imtiaz',
-      customerPhone: '+1 (555) 019-2834',
-      customerEmail: 'raheel@example.com',
-      status: 'Confirmed',
-      createdAt: 'Aug 3, 2026, 11:20 PM',
-      qrCodeSeed: 'VOUCHER-EUR-500-849102',
+  // Sync cart to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('wahla_cart', JSON.stringify(cartItems));
+    } catch (e) {
+      console.error('Failed to save cart:', e);
     }
-  ]);
+  }, [cartItems]);
 
-  // Modal Visibility
-  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
-  const [isReservationsOpen, setIsReservationsOpen] = useState<boolean>(false);
+  // Sync vouchers to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('wahla_vouchers', JSON.stringify(vouchers));
+    } catch (e) {
+      console.error('Failed to save vouchers:', e);
+    }
+  }, [vouchers]);
 
-  const [chartCurrency, setChartCurrency] = useState<Currency | null>(null);
-  const [reserveModalData, setReserveModalData] = useState<{
-    currencyCode: string;
-    currencyName: string;
-    flag: string;
-    amountForeign: number;
-    amountLocal: number;
-    type: 'buy' | 'sell';
-    rate: number;
-  } | null>(null);
-
-  const [rateAlertCurrency, setRateAlertCurrency] = useState<Currency | null>(null);
-
-  // Active Receipt Modal
-  const [activeReceipt, setActiveReceipt] = useState<{
-    reservation?: CurrencyReservation | null;
-    orderData?: {
-      orderId: string;
-      itemsCount: number;
-      total: number;
-      discount: number;
-      date: string;
-    } | null;
-  } | null>(null);
-
-  // Quick Toast Notification
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
-
-  const showToast = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 3000);
-  };
-
-  // Cart Operations
-  const handleAddPhoneToCart = (phone: PhoneProduct, selectedStorage: string, selectedColor: string) => {
-    const newItem: CartItem = {
-      id: `cart-${phone.id}-${selectedStorage}-${selectedColor}-${Date.now()}`,
-      productId: phone.id,
-      title: `${phone.name} (${selectedStorage})`,
-      subtitle: `Color: ${selectedColor} • ${phone.condition}`,
-      price: phone.price,
-      type: 'phone',
-      image: phone.image,
-      quantity: 1,
-      details: {
-        storage: selectedStorage,
-        color: selectedColor,
+  // Handlers for cart
+  const handleAddToCart = (newItem: CartItem) => {
+    setCartItems((prev) => {
+      const existing = prev.find((item) => item.id === newItem.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.id === newItem.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
       }
-    };
-
-    setCartItems((prev) => [...prev, newItem]);
-    showToast(`Added ${phone.name} (${selectedStorage}) to cart!`);
-    setIsCartOpen(true);
+      return [...prev, newItem];
+    });
   };
 
-  const handleAddAccessoryToCart = (acc: AccessoryProduct) => {
-    const newItem: CartItem = {
-      id: `cart-${acc.id}-${Date.now()}`,
-      productId: acc.id,
-      title: acc.name,
-      subtitle: acc.category,
-      price: acc.price,
-      type: 'accessory',
-      image: acc.image,
-      quantity: 1,
-    };
-
-    setCartItems((prev) => [...prev, newItem]);
-    showToast(`Added ${acc.name} to cart!`);
-    setIsCartOpen(true);
+  const handleRemoveFromCart = (id: string) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const handleUpdateCartQuantity = (id: string, delta: number) => {
+  const handleUpdateQuantity = (id: string, delta: number) => {
     setCartItems((prev) =>
       prev
         .map((item) => {
@@ -166,281 +95,130 @@ export default function HomePage() {
     );
   };
 
-  const handleRemoveCartItem = (id: string) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  const handleClearCart = () => setCartItems([]);
+
+  // Handlers for Currency Reservation
+  const handleOpenReserve = (curr: Currency, amountForeign?: number, costGbp?: number) => {
+    setSelectedReserveCurrency(curr);
+    setReserveForeignAmount(amountForeign);
+    setReserveCostGbp(costGbp);
   };
 
-  const handleCheckoutSuccess = (total: number, discount: number) => {
-    const receipt = {
-      orderData: {
-        orderId: `ORD-${Math.floor(100000 + Math.random() * 900000)}`,
-        itemsCount: cartItems.reduce((acc, i) => acc + i.quantity, 0),
-        total,
-        discount,
-        date: new Date().toLocaleDateString('en-US', {
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-        }),
-      },
-    };
-
-    setCartItems([]);
-    setIsCartOpen(false);
-    setActiveReceipt(receipt);
+  const handleConfirmReservation = (voucher: ReservationVoucher) => {
+    setVouchers((prev) => [voucher, ...prev]);
+    setIsVouchersOpen(true);
   };
 
-  // Currency Reservation Confirmation
-  const handleConfirmReservation = (newRes: CurrencyReservation) => {
-    setReservations((prev) => [newRes, ...prev]);
-    setReserveModalData(null);
-    setActiveReceipt({ reservation: newRes });
-  };
-
-  // Trade-In Voucher Claim
-  const handleClaimTradeInVoucher = (quote: TradeInQuote) => {
-    const tradeVoucher: CurrencyReservation = {
-      id: `TRADE-${Math.floor(100000 + Math.random() * 900000)}`,
-      currencyCode: 'USD',
-      currencyName: 'US Dollar Cash Payout',
-      flag: '🇺🇸',
-      amountForeign: quote.estimatedCashValue,
-      amountLocal: quote.estimatedCashValue,
-      type: 'buy',
-      exchangeRate: 1.0,
-      pickupLocation: 'Financial District Flagship Hub (Trade-In Desk)',
-      pickupDate: new Date().toISOString().split('T')[0],
-      pickupTime: 'Express Desk',
-      customerName: 'Customer Trade-In',
-      customerPhone: 'Verified Counter',
-      customerEmail: 'counter@wahlaexchange.com',
-      status: 'Confirmed',
-      createdAt: new Date().toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-      }),
-      qrCodeSeed: `TRADEIN-${quote.brand}-${quote.model}-${Date.now()}`,
-    };
-
-    setReservations((prev) => [tradeVoucher, ...prev]);
-    setActiveReceipt({ reservation: tradeVoucher });
-  };
-
-  const handleApplyTradeInToCurrency = (creditAmount: number) => {
-    setReserveModalData({
-      currencyCode: 'EUR',
-      currencyName: 'Euro',
-      flag: '🇪🇺',
-      amountForeign: Math.round(creditAmount * 0.918),
-      amountLocal: creditAmount,
-      type: 'buy',
-      rate: 0.918,
-    });
-    showToast(`Applied $${creditAmount} Trade-In credit to currency reserve!`);
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-amber-500 selection:text-slate-950 pb-16 lg:pb-0">
-      {/* Toast Notification Banner */}
-      {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-emerald-500 text-slate-950 px-4 py-3 rounded-2xl font-bold text-xs shadow-2xl flex items-center gap-2 animate-in slide-in-from-bottom-3">
-          <CheckCircle2 className="w-5 h-5" />
-          <span>{toastMessage}</span>
-        </div>
-      )}
-
-      {/* Header Navigation */}
+    <div className="min-h-screen flex flex-col bg-[#0F1115] text-slate-100 font-sans selection:bg-teal-500 selection:text-slate-950">
+      
+      {/* Top Navbar */}
       <Navbar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        cartCount={cartItems.reduce((acc, i) => acc + i.quantity, 0)}
         onOpenCart={() => setIsCartOpen(true)}
-        reservationsCount={reservations.length}
-        onOpenReservations={() => setIsReservationsOpen(true)}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
+        onOpenReservations={() => setIsVouchersOpen(true)}
+        cartCount={cartItems.reduce((acc, i) => acc + i.quantity, 0)}
+        reservationsCount={vouchers.length}
+        onSelectCategory={scrollToSection}
+      />
+
+      {/* Live Marquee Ticker */}
+      <RatesTicker />
+
+      {/* Hero Section */}
+      <HeroSection
+        onExploreRates={() => scrollToSection('currency-exchange')}
+        onExplorePhones={() => scrollToSection('smartphones')}
       />
 
       {/* Main Content Area */}
-      <main className="space-y-12 pb-16">
-        {/* Hero Banner */}
-        <HeroSection
-          onReserveClick={() => {
-            const eur = INITIAL_CURRENCIES[0];
-            setReserveModalData({
-              currencyCode: eur.code,
-              currencyName: eur.name,
-              flag: eur.flag,
-              amountForeign: 459,
-              amountLocal: 500,
-              type: 'buy',
-              rate: eur.buyRate,
-            });
-          }}
-          onTradeInClick={() => {
-            setActiveTab('tradein');
-            document.getElementById('tradein')?.scrollIntoView({ behavior: 'smooth' });
-          }}
-          onBrowsePhonesClick={() => {
-            setActiveTab('phones');
-            document.getElementById('phones')?.scrollIntoView({ behavior: 'smooth' });
-          }}
-          onAiAdvisorClick={() => {
-            setActiveTab('ai-advisor');
-            document.getElementById('ai-advisor')?.scrollIntoView({ behavior: 'smooth' });
-          }}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 space-y-12 sm:space-y-16 py-6">
+        
+        {/* Currency Exchange & Live Calculator Grid */}
+        <section id="currency-exchange" className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div className="lg:col-span-7">
+            <RatesTable
+              currencies={currencies}
+              onReserve={(curr) => handleOpenReserve(curr)}
+            />
+          </div>
+
+          <div className="lg:col-span-5">
+            <CurrencyConverter
+              currencies={currencies}
+              onReserveVoucher={(curr, foreign, gbp) => handleOpenReserve(curr, foreign, gbp)}
+            />
+          </div>
+        </section>
+
+        {/* Unlocked Smartphones Catalog */}
+        <PhonesCatalog
+          products={FEATURED_PRODUCTS}
+          onAddToCart={handleAddToCart}
         />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-12">
-          {/* Section 1: Live Converter Widget */}
-          <CurrencyConverter
-            onReserve={(data) => setReserveModalData(data)}
-            onOpenRateAlert={(curr) => setRateAlertCurrency(curr)}
-          />
+        {/* Trade-In Calculator */}
+        <PhoneTradeInCalculator />
 
-          {/* Section 2: Live Currency Rates Board */}
-          <RatesTable
-            onOpenChart={(curr) => setChartCurrency(curr)}
-            onReserve={(curr) =>
-              setReserveModalData({
-                currencyCode: curr.code,
-                currencyName: curr.name,
-                flag: curr.flag,
-                amountForeign: Math.round(500 * curr.buyRate),
-                amountLocal: 500,
-                type: 'buy',
-                rate: curr.buyRate,
-              })
-            }
-            onOpenRateAlert={(curr) => setRateAlertCurrency(curr)}
-            searchQuery={searchQuery}
-          />
+        {/* Travel Accessories & eSIM */}
+        <AccessoriesShop
+          products={FEATURED_PRODUCTS}
+          onAddToCart={handleAddToCart}
+        />
 
-          {/* Section 3: Mobile Phones Showcase */}
-          <PhonesCatalog
-            onAddToCart={handleAddPhoneToCart}
-            searchQuery={searchQuery}
-          />
+        {/* Gemini AI Travel Advisor */}
+        <AiAdvisor />
 
-          {/* Section 4: Phone Trade-In Calculator */}
-          <PhoneTradeInCalculator
-            onApplyToCurrency={handleApplyTradeInToCurrency}
-            onApplyToPhone={(creditVal) => {
-              setActiveTab('phones');
-              showToast(`Apply your $${creditVal} credit to any unlocked phone in store!`);
-              document.getElementById('phones')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            onClaimVoucher={handleClaimTradeInVoucher}
-          />
-
-          {/* Section 5: Accessories & eSIM Shop */}
-          <AccessoriesShop
-            onAddToCart={handleAddAccessoryToCart}
-            searchQuery={searchQuery}
-          />
-
-          {/* Section 6: AI Travel Advisor */}
-          <AiAdvisor />
-
-          {/* Section 7: Physical Counter Store Locator */}
-          <StoreLocator
-            onSelectBranch={(branch) => {
-              const eur = INITIAL_CURRENCIES[0];
-              setReserveModalData({
-                currencyCode: eur.code,
-                currencyName: eur.name,
-                flag: eur.flag,
-                amountForeign: 459,
-                amountLocal: 500,
-                type: 'buy',
-                rate: eur.buyRate,
-              });
-            }}
-          />
-        </div>
       </main>
 
-      {/* Footer */}
-      <Footer />
+      {/* Footer & Store Location */}
+      <StoreInfoFooter />
 
-      {/* Modals & Slide-overs */}
-      {chartCurrency && (
-        <CurrencyChartModal
-          currency={chartCurrency}
-          onClose={() => setChartCurrency(null)}
-          onReserve={(curr) =>
-            setReserveModalData({
-              currencyCode: curr.code,
-              currencyName: curr.name,
-              flag: curr.flag,
-              amountForeign: Math.round(500 * curr.buyRate),
-              amountLocal: 500,
-              type: 'buy',
-              rate: curr.buyRate,
-            })
-          }
-        />
-      )}
-
-      {reserveModalData && (
-        <CurrencyReserveModal
-          initialData={reserveModalData}
-          onClose={() => setReserveModalData(null)}
-          onConfirmReservation={handleConfirmReservation}
-        />
-      )}
-
-      {rateAlertCurrency && (
-        <RateAlertModal
-          currency={rateAlertCurrency}
-          onClose={() => setRateAlertCurrency(null)}
-          onSaveAlert={(code, target, email) => {
-            showToast(`Rate alert created for ${code} at $${target}!`);
-          }}
-        />
-      )}
-
+      {/* Cart Drawer */}
       <CartDrawer
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         items={cartItems}
-        onUpdateQuantity={handleUpdateCartQuantity}
-        onRemoveItem={handleRemoveCartItem}
-        onCheckoutSuccess={handleCheckoutSuccess}
+        onRemoveItem={handleRemoveFromCart}
+        onUpdateQuantity={handleUpdateQuantity}
+        onClearCart={handleClearCart}
       />
 
-      <ReservationsModal
-        isOpen={isReservationsOpen}
-        onClose={() => setIsReservationsOpen(false)}
-        reservations={reservations}
-        onViewVoucher={(res) => setActiveReceipt({ reservation: res })}
-        onCancelReservation={(id) => {
-          setReservations((prev) => prev.filter((r) => r.id !== id));
-          showToast('Reservation cancelled.');
-        }}
-      />
-
-      {activeReceipt && (
-        <ReceiptModal
-          reservation={activeReceipt.reservation}
-          orderData={activeReceipt.orderData}
-          onClose={() => setActiveReceipt(null)}
+      {/* Reserve Voucher Modal */}
+      {selectedReserveCurrency && (
+        <CurrencyReserveModal
+          isOpen={!!selectedReserveCurrency}
+          onClose={() => setSelectedReserveCurrency(null)}
+          currency={selectedReserveCurrency}
+          initialAmountForeign={reserveForeignAmount}
+          initialCostGbp={reserveCostGbp}
+          onConfirmReservation={handleConfirmReservation}
         />
       )}
 
-      {/* WhatsApp Floating Right Corner Widget */}
-      <RightCornerWidgets />
-
-      {/* App-like Sticky Mobile Bottom Navigation Bar */}
-      <MobileBottomNav
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        cartCount={cartItems.reduce((acc, i) => acc + i.quantity, 0)}
-        onOpenCart={() => setIsCartOpen(true)}
+      {/* Reservations / Vouchers Modal */}
+      <ReservationsModal
+        isOpen={isVouchersOpen}
+        onClose={() => setIsVouchersOpen(false)}
+        vouchers={vouchers}
       />
+
+      {/* Floating WhatsApp Quick Action */}
+      <a
+        href="https://wa.me/441412660379"
+        target="_blank"
+        rel="noreferrer"
+        className="fixed bottom-6 right-6 z-40 p-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-full shadow-2xl transition-transform hover:scale-110 flex items-center gap-2 font-black text-xs group"
+        title="Chat with Glasgow Store on WhatsApp"
+      >
+        <MessageCircle className="w-5 h-5 fill-slate-950" />
+        <span className="hidden group-hover:inline pr-1">WhatsApp Glasgow Counter</span>
+      </a>
+
     </div>
   );
 }

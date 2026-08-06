@@ -135,7 +135,7 @@ export const FEATURED_PRODUCTS: Product[] = [
     specs: {
       ANC: 'Hybrid 45dB Active Noise Cancellation',
       Battery: '8h buds + 28h charging case',
-      Water Resistance: 'IPX5 Sweat-proof',
+      'Water Resistance': 'IPX5 Sweat-proof',
     },
     inStock: true,
   },
