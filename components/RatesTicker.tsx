@@ -27,3 +27,6 @@ export const RatesTicker: React.FC = () => {
     </div>
   );
 };
+
+export default RatesTicker;
+

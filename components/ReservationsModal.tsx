@@ -78,3 +78,6 @@ export const ReservationsModal: React.FC<ReservationsModalProps> = ({ isOpen, on
     </div>
   );
 };
+
+export default ReservationsModal;
+

@@ -168,3 +168,6 @@ export const PhonesCatalog: React.FC<PhonesCatalogProps> = ({ products, onAddToC
     </div>
   );
 };
+
+export default PhonesCatalog;
+

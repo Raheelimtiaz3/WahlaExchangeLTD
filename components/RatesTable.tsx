@@ -114,3 +114,6 @@ export const RatesTable: React.FC<RatesTableProps> = ({ currencies, onReserve, o
     </div>
   );
 };
+
+export default RatesTable;
+

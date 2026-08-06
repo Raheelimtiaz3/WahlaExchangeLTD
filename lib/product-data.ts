@@ -140,3 +140,10 @@ export const FEATURED_PRODUCTS: Product[] = [
     inStock: true,
   },
 ];
+
+export const PHONES_DATA: Product[] = FEATURED_PRODUCTS.filter((p) => p.category === 'smartphones');
+export const ACCESSORIES_DATA: Product[] = FEATURED_PRODUCTS.filter((p) => p.category !== 'smartphones');
+export const PRODUCTS_DATA: Product[] = FEATURED_PRODUCTS;
+
+export default FEATURED_PRODUCTS;
+

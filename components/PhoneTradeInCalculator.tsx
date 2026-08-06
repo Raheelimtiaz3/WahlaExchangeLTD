@@ -160,3 +160,6 @@ export const PhoneTradeInCalculator: React.FC = () => {
     </div>
   );
 };
+
+export default PhoneTradeInCalculator;
+

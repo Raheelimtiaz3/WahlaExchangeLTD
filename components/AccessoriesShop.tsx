@@ -122,3 +122,6 @@ export const AccessoriesShop: React.FC<AccessoriesShopProps> = ({ products, onAd
     </div>
   );
 };
+
+export default AccessoriesShop;
+

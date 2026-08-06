@@ -116,3 +116,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreRates, onExpl
     </div>
   );
 };
+
+export default HeroSection;
+

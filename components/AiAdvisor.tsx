@@ -172,3 +172,6 @@ export const AiAdvisor: React.FC = () => {
     </div>
   );
 };
+
+export default AiAdvisor;
+

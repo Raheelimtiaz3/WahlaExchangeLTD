@@ -120,3 +120,6 @@ export const StoreInfoFooter: React.FC = () => {
     </footer>
   );
 };
+
+export default StoreInfoFooter;
+

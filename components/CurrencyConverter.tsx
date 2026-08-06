@@ -109,3 +109,6 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = ({ currencies
     </div>
   );
 };
+
+export default CurrencyConverter;
+

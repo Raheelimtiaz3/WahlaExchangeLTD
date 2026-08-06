@@ -145,3 +145,6 @@ export const CurrencyReserveModal: React.FC<CurrencyReserveModalProps> = ({
     </div>
   );
 };
+
+export default CurrencyReserveModal;
+
