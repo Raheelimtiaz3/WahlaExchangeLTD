@@ -61,7 +61,14 @@ export const AccessoriesShop: React.FC<AccessoriesShopProps> = ({ products, onAd
                   alt={acc.name}
                   className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=800&q=80';
+                    const img = e.target as HTMLImageElement;
+                    if (acc.category === 'powerbanks') {
+                      img.src = '/images/magsafe_powerbank.jpg';
+                    } else if (acc.category === 'audio') {
+                      img.src = 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=800&q=80';
+                    } else {
+                      img.src = 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=800&q=80';
+                    }
                   }}
                 />
               </div>

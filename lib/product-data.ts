@@ -109,7 +109,7 @@ export const FEATURED_PRODUCTS: Product[] = [
     originalPrice: 59.99,
     rating: 4.8,
     reviewsCount: 184,
-    image: 'https://images.unsplash.com/photo-1609592424009-11c52b1e3e7f?auto=format&fit=crop&w=800&q=80',
+    image: '/images/magsafe_powerbank.jpg',
     badge: 'Wireless Fast Charge',
     description: 'Slim magnetic wireless battery pack with kickstand, 15W MagSafe wireless and 20W wired fast charging.',
     specs: {
