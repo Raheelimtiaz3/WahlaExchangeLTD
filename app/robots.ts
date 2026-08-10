@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://ais-pre-f6a5z7kzz52uck3kdkfqm4-355211944850.asia-southeast1.run.app/sitemap.xml',
+    sitemap: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://wahlaexchange.co.uk'}/sitemap.xml`,
   };
 }

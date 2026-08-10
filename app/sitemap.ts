@@ -1,7 +1,16 @@
 import { MetadataRoute } from 'next';
+import { PRODUCTS_DATA } from '@/lib/product-data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://ais-pre-f6a5z7kzz52uck3kdkfqm4-355211944850.asia-southeast1.run.app';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://wahlaexchange.co.uk';
+
+  const productUrls: MetadataRoute.Sitemap = PRODUCTS_DATA.map((product) => ({
+    url: `${baseUrl}/products#${product.id}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.7,
+  }));
+
   return [
     {
       url: baseUrl,
@@ -13,7 +22,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/products`,
       lastModified: new Date(),
       changeFrequency: 'daily',
-      priority: 0.8,
+      priority: 0.9,
     },
+    ...productUrls,
   ];
 }
