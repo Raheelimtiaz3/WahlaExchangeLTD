@@ -6,10 +6,10 @@ import { TrendingUp, TrendingDown } from 'lucide-react';
 
 export const RatesTicker: React.FC = () => {
   return (
-    <div className="bg-[#0A0C0E] border-b border-slate-800/80 text-xs py-1.5 overflow-hidden whitespace-nowrap select-none">
-      <div className="flex items-center animate-marquee gap-8 inline-block">
+    <div className="bg-[#0A0C0E] border-b border-slate-800/80 text-xs py-2 overflow-hidden whitespace-nowrap select-none group relative">
+      <div className="animate-marquee-slow flex items-center gap-8">
         {INITIAL_CURRENCIES.concat(INITIAL_CURRENCIES).map((curr, idx) => (
-          <div key={`${curr.code}-${idx}`} className="inline-flex items-center gap-2 text-slate-300">
+          <div key={`${curr.code}-${idx}`} className="inline-flex items-center gap-2 text-slate-300 shrink-0">
             <span className="font-bold text-white flex items-center gap-1.5">
               <img src={curr.flag} alt={curr.code} className="w-4 h-3 rounded-xs object-cover" />
               {curr.code}
