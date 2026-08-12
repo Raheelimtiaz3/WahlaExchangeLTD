@@ -31,12 +31,12 @@ export default function StoreLocator({ onSelectBranch }: StoreLocatorProps) {
   )}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 
   return (
-    <div id="locations" className="bg-[#0F1115] border border-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-8 space-y-5 sm:space-y-6 shadow-xl">
+    <div id="locations" className="bg-[#111827] border border-slate-700/80 rounded-2xl sm:rounded-3xl p-4 sm:p-8 space-y-5 sm:space-y-6 shadow-xl">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800 pb-5">
         <div>
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs font-bold text-teal-500 uppercase tracking-[0.2em] flex items-center gap-1">
+            <span className="text-xs font-bold text-emerald-400 uppercase tracking-[0.2em] flex items-center gap-1">
               <MapPin className="w-3.5 h-3.5" /> Physical Counter Locations
             </span>
             <span className="text-xs text-slate-400 font-medium">• Airport & City Express Pickups</span>

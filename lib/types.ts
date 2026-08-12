@@ -40,6 +40,12 @@ export interface CartItem {
   };
 }
 
+export interface StoragePricing {
+  storage: string;
+  price: number;
+  originalPrice?: number;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -55,5 +61,6 @@ export interface Product {
   specs?: Record<string, string>;
   colorVariants?: { name: string; hex: string; image: string }[];
   storageOptions?: string[];
+  storagePrices?: StoragePricing[];
   inStock: boolean;
 }

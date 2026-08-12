@@ -24,11 +24,11 @@ export const PhoneTradeInCalculator: React.FC = () => {
 
   return (
     <div id="trade-in" className="py-8">
-      <div className="bg-[#14171F] border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl">
+      <div className="bg-[#111827] border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
           <div className="lg:col-span-6 space-y-4">
-            <span className="text-xs font-bold uppercase tracking-wider text-teal-400 bg-teal-950 px-2.5 py-1 rounded-md border border-teal-800/60">
+            <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded-md border border-emerald-800/60">
               Instant Cash or Upgrade Credit
             </span>
             <h2 className="text-2xl sm:text-4xl font-black text-white">
@@ -40,21 +40,21 @@ export const PhoneTradeInCalculator: React.FC = () => {
 
             <div className="space-y-2 pt-2 text-xs text-slate-300">
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>Instant inspection at Glasgow counter in under 10 minutes</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>Cash payout or direct store credit towards foreign exchange</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>Free secure data wipe certification provided</span>
               </div>
             </div>
           </div>
 
-          <div className="lg:col-span-6 bg-[#0B0D12] border border-slate-800 rounded-2xl p-5 sm:p-6 space-y-4">
+          <div className="lg:col-span-6 bg-[#0A0F1D] border border-slate-800 rounded-2xl p-5 sm:p-6 space-y-4">
             {/* Brand Select */}
             <div>
               <label className="block text-xs font-bold text-slate-400 mb-1.5">Select Brand</label>

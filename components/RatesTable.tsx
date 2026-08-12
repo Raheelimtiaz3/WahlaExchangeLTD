@@ -20,7 +20,7 @@ export const RatesTable: React.FC<RatesTableProps> = ({ currencies, onReserve, o
   );
 
   return (
-    <div className="bg-[#14171F] border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-xl">
+    <div className="bg-[#111827] border border-slate-700/80 rounded-2xl p-4 sm:p-6 shadow-xl">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <h2 className="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
@@ -38,7 +38,7 @@ export const RatesTable: React.FC<RatesTableProps> = ({ currencies, onReserve, o
             placeholder="Search USD, EUR, PKR..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-[#0F1115] border border-slate-700/80 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-teal-400"
+            className="w-full pl-9 pr-4 py-2 bg-[#0A0F1D] border border-slate-700/80 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-400"
           />
         </div>
       </div>
@@ -63,7 +63,7 @@ export const RatesTable: React.FC<RatesTableProps> = ({ currencies, onReserve, o
                     <div className="font-extrabold text-white text-sm flex items-center gap-1.5">
                       {curr.code}
                       {curr.popular && (
-                        <span className="px-1.5 py-0.5 text-[9px] bg-teal-950 text-teal-300 font-bold rounded border border-teal-800/50">
+                        <span className="px-1.5 py-0.5 text-[9px] bg-emerald-950/80 text-emerald-300 font-bold rounded border border-emerald-800/50">
                           Popular
                         </span>
                       )}
@@ -72,7 +72,7 @@ export const RatesTable: React.FC<RatesTableProps> = ({ currencies, onReserve, o
                   </div>
                 </td>
 
-                <td className="py-3.5 text-right font-black text-teal-400 text-sm sm:text-base">
+                <td className="py-3.5 text-right font-black text-emerald-400 text-sm sm:text-base">
                   {curr.sellRate.toFixed(2)}
                 </td>
 
@@ -99,7 +99,7 @@ export const RatesTable: React.FC<RatesTableProps> = ({ currencies, onReserve, o
                     )}
                     <button
                       onClick={() => onReserve(curr)}
-                      className="px-3 py-1.5 bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold text-xs rounded-lg transition-all flex items-center gap-1 shadow-md"
+                      className="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs rounded-lg transition-all flex items-center gap-1 shadow-md"
                     >
                       <Lock className="w-3 h-3" />
                       <span>Lock Rate</span>

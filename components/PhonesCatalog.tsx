@@ -7,9 +7,10 @@ import { ShoppingBag, Star, Check, Smartphone, ShieldCheck } from 'lucide-react'
 interface PhonesCatalogProps {
   products: Product[];
   onAddToCart: (item: CartItem) => void;
+  onSelectProduct?: (product: Product) => void;
 }
 
-export const PhonesCatalog: React.FC<PhonesCatalogProps> = ({ products, onAddToCart }) => {
+export const PhonesCatalog: React.FC<PhonesCatalogProps> = ({ products, onAddToCart, onSelectProduct }) => {
   const [selectedBrand, setSelectedBrand] = useState('all');
   const [addedId, setAddedId] = useState<string | null>(null);
 
@@ -60,8 +61,8 @@ export const PhonesCatalog: React.FC<PhonesCatalogProps> = ({ products, onAddToC
               onClick={() => setSelectedBrand(brand)}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all capitalize shrink-0 ${
                 selectedBrand === brand
-                  ? 'bg-teal-500 text-slate-950 shadow-md'
-                  : 'bg-[#14171F] text-slate-400 hover:text-white border border-slate-800'
+                  ? 'bg-emerald-500 text-slate-950 shadow-md font-black'
+                  : 'bg-[#111827] text-slate-400 hover:text-white border border-slate-700/80'
               }`}
             >
               {brand}
@@ -75,13 +76,14 @@ export const PhonesCatalog: React.FC<PhonesCatalogProps> = ({ products, onAddToC
         {filtered.map((phone) => (
           <div
             key={phone.id}
-            className="bg-[#14171F] border border-slate-800 hover:border-slate-700 rounded-2xl p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-xl group"
+            className="bg-[#111827] border border-slate-700/80 hover:border-emerald-500/50 rounded-2xl p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-xl group cursor-pointer"
+            onClick={() => onSelectProduct?.(phone)}
           >
             <div>
               {/* Badge & Image */}
-              <div className="relative aspect-4/3 rounded-xl bg-[#0B0D12] overflow-hidden mb-4 border border-slate-800 flex items-center justify-center p-4">
+              <div className="relative aspect-4/3 rounded-xl bg-[#0A0F1D] overflow-hidden mb-4 border border-slate-800 flex items-center justify-center p-4">
                 {phone.badge && (
-                  <span className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-md bg-teal-950/90 border border-teal-800/80 text-[10px] font-bold text-teal-300">
+                  <span className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-md bg-emerald-950/90 border border-emerald-800/80 text-[10px] font-bold text-emerald-300">
                     {phone.badge}
                   </span>
                 )}
@@ -94,11 +96,17 @@ export const PhonesCatalog: React.FC<PhonesCatalogProps> = ({ products, onAddToC
                     (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80';
                   }}
                 />
+
+                <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-xs font-black shadow">
+                    View Full Specs & Options
+                  </span>
+                </div>
               </div>
 
               {/* Title & Brand */}
               <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
-                <span className="font-bold uppercase tracking-wider text-teal-400">{phone.brand}</span>
+                <span className="font-bold uppercase tracking-wider text-emerald-400">{phone.brand}</span>
                 <div className="flex items-center gap-1 text-amber-400 text-[11px] font-bold">
                   <Star className="w-3.5 h-3.5 fill-amber-400" />
                   <span>{phone.rating}</span>
@@ -106,7 +114,7 @@ export const PhonesCatalog: React.FC<PhonesCatalogProps> = ({ products, onAddToC
                 </div>
               </div>
 
-              <h3 className="text-lg font-black text-white group-hover:text-teal-300 transition-colors">
+              <h3 className="text-lg font-black text-white group-hover:text-emerald-300 transition-colors">
                 {phone.name}
               </h3>
 
@@ -127,6 +135,24 @@ export const PhonesCatalog: React.FC<PhonesCatalogProps> = ({ products, onAddToC
                   </div>
                 </div>
               )}
+              {/* Memory Storage Price Breakdown */}
+              {phone.storagePrices && phone.storagePrices.length > 0 && (
+                <div className="mt-3 pt-2.5 border-t border-slate-800/80">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-1">
+                    Memory Tier Pricing:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5 text-[10px]">
+                    {phone.storagePrices.map((sp) => (
+                      <span
+                        key={sp.storage}
+                        className="px-2 py-0.5 rounded-md bg-[#0A0F1D] border border-slate-800 text-slate-200 font-bold"
+                      >
+                        {sp.storage}: <span className="text-emerald-400">£{sp.price.toFixed(0)}</span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Price & Add to Cart */}
@@ -142,11 +168,14 @@ export const PhonesCatalog: React.FC<PhonesCatalogProps> = ({ products, onAddToC
               </div>
 
               <button
-                onClick={() => handleAdd(phone)}
-                className={`px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-1.5 shadow-md ${
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAdd(phone);
+                }}
+                className={`px-4 py-2.5 rounded-xl font-extrabold text-xs transition-all flex items-center gap-1.5 shadow-md ${
                   addedId === phone.id
-                    ? 'bg-emerald-500 text-slate-950'
-                    : 'bg-teal-500 hover:bg-teal-400 text-slate-950'
+                    ? 'bg-emerald-400 text-slate-950'
+                    : 'bg-emerald-500 hover:bg-emerald-400 text-slate-950'
                 }`}
               >
                 {addedId === phone.id ? (

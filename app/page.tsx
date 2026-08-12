@@ -14,10 +14,11 @@ import { StoreInfoFooter } from '@/components/StoreInfoFooter';
 import { CartDrawer } from '@/components/CartDrawer';
 import { CurrencyReserveModal } from '@/components/CurrencyReserveModal';
 import { ReservationsModal } from '@/components/ReservationsModal';
+import { ProductDetailModal } from '@/components/ProductDetailModal';
 
 import { INITIAL_CURRENCIES } from '@/lib/currency-data';
 import { FEATURED_PRODUCTS } from '@/lib/product-data';
-import { Currency, CartItem, ReservationVoucher } from '@/lib/types';
+import { Currency, CartItem, ReservationVoucher, Product } from '@/lib/types';
 import { MessageCircle, Sparkles } from 'lucide-react';
 
 export default function HomePage() {
@@ -27,6 +28,7 @@ export default function HomePage() {
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isVouchersOpen, setIsVouchersOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   // Reserve modal state
   const [selectedReserveCurrency, setSelectedReserveCurrency] = useState<Currency | null>(null);
@@ -159,6 +161,7 @@ export default function HomePage() {
         <PhonesCatalog
           products={FEATURED_PRODUCTS}
           onAddToCart={handleAddToCart}
+          onSelectProduct={(product) => setSelectedProduct(product)}
         />
 
         {/* Trade-In Calculator */}
@@ -168,6 +171,7 @@ export default function HomePage() {
         <AccessoriesShop
           products={FEATURED_PRODUCTS}
           onAddToCart={handleAddToCart}
+          onSelectProduct={(product) => setSelectedProduct(product)}
         />
 
         {/* Gemini AI Travel Advisor */}
@@ -186,6 +190,14 @@ export default function HomePage() {
         onRemoveItem={handleRemoveFromCart}
         onUpdateQuantity={handleUpdateQuantity}
         onClearCart={handleClearCart}
+      />
+
+      {/* Product Detail Modal */}
+      <ProductDetailModal
+        product={selectedProduct}
+        isOpen={!!selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        onAddToCart={handleAddToCart}
       />
 
       {/* Reserve Voucher Modal */}

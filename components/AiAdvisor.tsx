@@ -54,9 +54,9 @@ export const AiAdvisor: React.FC = () => {
 
   return (
     <div id="ai-advisor" className="py-8">
-      <div className="bg-[#14171F] border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+      <div className="bg-[#111827] border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
         {/* Glow */}
-        <div className="absolute -right-20 -top-20 w-80 h-80 bg-teal-500/10 blur-[90px] pointer-events-none rounded-full" />
+        <div className="absolute -right-20 -top-20 w-80 h-80 bg-emerald-500/10 blur-[90px] pointer-events-none rounded-full" />
 
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div>

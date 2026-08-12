@@ -5,7 +5,7 @@ import { MapPin, PhoneCall, Clock, ShieldCheck, Mail, MessageCircle, ExternalLin
 
 export const StoreInfoFooter: React.FC = () => {
   return (
-    <footer id="store-location" className="bg-[#0A0C0F] border-t border-slate-800 text-slate-300 pt-12 pb-8">
+    <footer id="store-location" className="bg-[#070A14] border-t border-slate-800 text-slate-300 pt-12 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
         {/* Main Footer Grid */}
@@ -14,11 +14,11 @@ export const StoreInfoFooter: React.FC = () => {
           {/* Col 1: Store Branding & Address */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-teal-500 text-slate-950 font-black text-lg">
+              <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-emerald-500 text-slate-950 font-black text-lg">
                 W
               </div>
               <span className="font-extrabold text-lg text-white">
-                WAHLA <span className="text-teal-400">EXCHANGE</span> LTD
+                WAHLA <span className="text-emerald-400">EXCHANGE</span> LTD
               </span>
             </div>
 
@@ -28,16 +28,16 @@ export const StoreInfoFooter: React.FC = () => {
 
             <div className="pt-2 text-xs space-y-2 text-slate-300">
               <div className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                 <span>22 Maxwell Road, Glasgow, G41 1QE, Scotland, UK</span>
               </div>
               <div className="flex items-center gap-2">
-                <PhoneCall className="w-4 h-4 text-teal-400 shrink-0" />
-                <a href="tel:+441412660379" className="hover:text-teal-400 font-bold">+44 141 266 0379</a>
+                <PhoneCall className="w-4 h-4 text-emerald-400 shrink-0" />
+                <a href="tel:+441412660379" className="hover:text-emerald-400 font-bold">+44 141 266 0379</a>
               </div>
               <div className="flex items-center gap-2">
                 <MessageCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-                <a href="https://wa.me/441412660379" target="_blank" rel="noreferrer" className="hover:text-teal-400 font-bold text-emerald-400">
+                <a href="https://wa.me/441412660379" target="_blank" rel="noreferrer" className="hover:text-emerald-400 font-bold text-emerald-400">
                   WhatsApp Support Active
                 </a>
               </div>

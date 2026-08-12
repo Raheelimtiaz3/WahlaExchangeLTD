@@ -26,6 +26,11 @@ export const FEATURED_PRODUCTS: Product[] = [
       { name: 'Black Titanium', hex: '#2b2b2e', image: 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=800&q=80' },
     ],
     storageOptions: ['256GB', '512GB', '1TB'],
+    storagePrices: [
+      { storage: '256GB', price: 1199.00, originalPrice: 1299.00 },
+      { storage: '512GB', price: 1399.00, originalPrice: 1499.00 },
+      { storage: '1TB', price: 1599.00, originalPrice: 1699.00 },
+    ],
     inStock: true,
   },
   {
@@ -52,6 +57,11 @@ export const FEATURED_PRODUCTS: Product[] = [
       { name: 'Titanium Black', hex: '#212224', image: 'https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=800&q=80' },
     ],
     storageOptions: ['256GB', '512GB', '1TB'],
+    storagePrices: [
+      { storage: '256GB', price: 1149.00, originalPrice: 1249.00 },
+      { storage: '512GB', price: 1349.00, originalPrice: 1449.00 },
+      { storage: '1TB', price: 1549.00, originalPrice: 1649.00 },
+    ],
     inStock: true,
   },
   {
@@ -78,6 +88,11 @@ export const FEATURED_PRODUCTS: Product[] = [
       { name: 'Porcelain White', hex: '#f0ece1', image: 'https://images.unsplash.com/photo-1546054454-aa26e2b734c7?auto=format&fit=crop&w=800&q=80' },
     ],
     storageOptions: ['128GB', '256GB', '512GB'],
+    storagePrices: [
+      { storage: '128GB', price: 899.00, originalPrice: 999.00 },
+      { storage: '256GB', price: 999.00, originalPrice: 1099.00 },
+      { storage: '512GB', price: 1149.00, originalPrice: 1249.00 },
+    ],
     inStock: true,
   },
   {
@@ -109,7 +124,7 @@ export const FEATURED_PRODUCTS: Product[] = [
     originalPrice: 59.99,
     rating: 4.8,
     reviewsCount: 184,
-    image: '/images/magsafe_powerbank.jpg',
+    image: 'https://images.unsplash.com/photo-1622445268465-8438a05058aa?auto=format&fit=crop&w=800&q=80',
     badge: 'Wireless Fast Charge',
     description: 'Slim magnetic wireless battery pack with kickstand, 15W MagSafe wireless and 20W wired fast charging.',
     specs: {

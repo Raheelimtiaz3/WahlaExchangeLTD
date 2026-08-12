@@ -7,14 +7,16 @@ import AccessoriesShop from '@/components/AccessoriesShop';
 import StoreInfoFooter from '@/components/StoreInfoFooter';
 import CartDrawer from '@/components/CartDrawer';
 import ReservationsModal from '@/components/ReservationsModal';
+import ProductDetailModal from '@/components/ProductDetailModal';
 import { FEATURED_PRODUCTS, PHONES_DATA, ACCESSORIES_DATA } from '@/lib/product-data';
-import { CartItem, ReservationVoucher } from '@/lib/types';
+import { CartItem, ReservationVoucher, Product } from '@/lib/types';
 
 export default function ProductsPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [vouchers, setVouchers] = useState<ReservationVoucher[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isVouchersOpen, setIsVouchersOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const handleAddToCart = (newItem: CartItem) => {
     setCartItems((prev) => {
@@ -72,8 +74,16 @@ export default function ProductsPage() {
           </p>
         </div>
 
-        <PhonesCatalog products={productsList} onAddToCart={handleAddToCart} />
-        <AccessoriesShop products={productsList} onAddToCart={handleAddToCart} />
+        <PhonesCatalog
+          products={productsList}
+          onAddToCart={handleAddToCart}
+          onSelectProduct={(product) => setSelectedProduct(product)}
+        />
+        <AccessoriesShop
+          products={productsList}
+          onAddToCart={handleAddToCart}
+          onSelectProduct={(product) => setSelectedProduct(product)}
+        />
       </main>
 
       <StoreInfoFooter />
@@ -85,6 +95,13 @@ export default function ProductsPage() {
         onRemoveItem={handleRemoveFromCart}
         onUpdateQuantity={handleUpdateQuantity}
         onClearCart={handleClearCart}
+      />
+
+      <ProductDetailModal
+        product={selectedProduct}
+        isOpen={!!selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        onAddToCart={handleAddToCart}
       />
 
       <ReservationsModal
