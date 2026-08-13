@@ -1,6 +1,7 @@
 import { Product } from './types';
 
 export const FEATURED_PRODUCTS: Product[] = [
+  // --- SMARTPHONES ---
   {
     id: 'iphone-16-pro-max',
     name: 'Apple iPhone 16 Pro Max',
@@ -95,6 +96,8 @@ export const FEATURED_PRODUCTS: Product[] = [
     ],
     inStock: true,
   },
+
+  // --- ACCESSORIES & CHARGERS ---
   {
     id: '65w-gan-travel-charger',
     name: 'Wahla Pro 65W GaN Universal Travel Charger',
@@ -116,49 +119,89 @@ export const FEATURED_PRODUCTS: Product[] = [
     inStock: true,
   },
   {
-    id: 'magsafe-power-bank-10k',
-    name: 'Wahla MagMagnetic 10,000mAh Power Bank',
+    id: 'wahla-20k-100w-powerbank',
+    name: 'Wahla Ultra 20,000mAh 100W Laptop & Phone Power Bank',
     brand: 'Wahla Tech',
     category: 'powerbanks',
-    price: 39.99,
-    originalPrice: 59.99,
-    rating: 4.8,
-    reviewsCount: 184,
-    image: 'https://images.unsplash.com/photo-1622445268465-8438a05058aa?auto=format&fit=crop&w=800&q=80',
-    badge: 'Wireless Fast Charge',
-    description: 'Slim magnetic wireless battery pack with kickstand, 15W MagSafe wireless and 20W wired fast charging.',
+    price: 49.99,
+    originalPrice: 69.99,
+    rating: 4.9,
+    reviewsCount: 198,
+    image: '/images/ultra_power_bank.jpg',
+    badge: '100W Ultra Power',
+    description: 'High-capacity 20,000mAh portable charger with 100W USB-C PD output to fast charge MacBooks, iPhones, Galaxies, and travel gear on the go.',
     specs: {
-      Capacity: '10,000mAh',
-      Wireless: '15W Fast Qi/MagSafe',
-      Wired: '20W USB-C PD Input/Output',
-      Display: 'LED Battery % Indicator',
+      Capacity: '20,000mAh Air-Travel Approved',
+      Output: '100W USB-C Power Delivery Fast Output',
+      Display: 'Smart Digital LED Battery % & Voltage Display',
+      Ports: '2x USB-C + 1x USB-A',
     },
     inStock: true,
   },
   {
-    id: 'wireless-earbuds-pro',
-    name: 'Active Noise Cancelling Earbuds Pro',
-    brand: 'Wahla Audio',
-    category: 'audio',
-    price: 89.99,
-    originalPrice: 119.99,
-    rating: 4.7,
-    reviewsCount: 168,
-    image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=800&q=80',
-    badge: 'HD Noise Cancelling',
-    description: '45dB Hybrid ANC with Transparency mode, HD microphone for crystal clear international calls, and 36h total battery life.',
+    id: 'universal-travel-plug-adapter',
+    name: 'Wahla World Universal Travel Adapter & 4x USB Hub',
+    brand: 'Wahla Tech',
+    category: 'chargers',
+    price: 24.99,
+    originalPrice: 34.99,
+    rating: 4.9,
+    reviewsCount: 310,
+    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80',
+    badge: '150+ Countries',
+    description: 'All-in-one international power plug for UK, EU, USA, Japan, China, Australia, and Middle East with 4 USB charging ports.',
     specs: {
-      ANC: 'Hybrid 45dB Active Noise Cancellation',
-      Battery: '8h buds + 28h charging case',
-      'Water Resistance': 'IPX5 Sweat-proof',
+      Coverage: 'Works in 150+ Countries Worldwide',
+      Fuse: 'Auto-Reset 8A Overload Safety Fuse',
+      Ports: '3x USB-A + 1x USB-C PD 35W',
     },
     inStock: true,
+  },
+
+  // --- SEPARATED ADULT VAPES RETAIL (STRICTLY AGE 18+ ONLY) ---
+  {
+    id: 'crystal-pro-600-vape',
+    name: 'Crystal Pro Max 600 Puffs Disposable Bar (18+)',
+    brand: 'Crystal Bar',
+    category: 'vapes',
+    price: 5.99,
+    originalPrice: 7.99,
+    rating: 4.8,
+    reviewsCount: 88,
+    image: 'https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&w=800&q=80',
+    badge: '18+ Adult Retail Only',
+    description: 'Compact 20mg nicotine salt disposable device. Strictly for existing adult smokers aged 18 and over in Glasgow store.',
+    specs: {
+      Nicotine: '20mg Nic Salt (2%)',
+      Puffs: 'Approx 600 Puffs',
+      Verification: 'Government Photo ID Required at Counter',
+    },
+    inStock: true,
+    isAgeRestricted: true,
+  },
+  {
+    id: 'elfbar-600-vape-pack',
+    name: 'Elux Legend 3500 Mesh Pod System (18+)',
+    brand: 'Elux',
+    category: 'vapes',
+    price: 11.99,
+    originalPrice: 14.99,
+    rating: 4.7,
+    reviewsCount: 62,
+    image: 'https://images.unsplash.com/photo-1563298723-dcfebaa392e3?auto=format&fit=crop&w=800&q=80',
+    badge: '18+ Adult Retail Only',
+    description: 'Rechargeable adult vape kit with dual mesh coil technology. In-store age verification required upon collection.',
+    specs: {
+      Nicotine: '20mg TPD Compliant',
+      Battery: '650mAh Rechargeable Type-C',
+      Verification: 'Strict Age 18+ Verification Enforced',
+    },
+    inStock: true,
+    isAgeRestricted: true,
   },
 ];
 
 export const PHONES_DATA: Product[] = FEATURED_PRODUCTS.filter((p) => p.category === 'smartphones');
-export const ACCESSORIES_DATA: Product[] = FEATURED_PRODUCTS.filter((p) => p.category !== 'smartphones');
+export const ACCESSORIES_DATA: Product[] = FEATURED_PRODUCTS.filter((p) => p.category !== 'smartphones' && p.category !== 'vapes');
+export const VAPES_DATA: Product[] = FEATURED_PRODUCTS.filter((p) => p.category === 'vapes');
 export const PRODUCTS_DATA: Product[] = FEATURED_PRODUCTS;
-
-export default FEATURED_PRODUCTS;
-

@@ -32,7 +32,7 @@ export const AccessoriesShop: React.FC<AccessoriesShopProps> = ({ products, onAd
   return (
     <div id="accessories" className="py-8">
       <div className="mb-8">
-        <span className="text-xs font-black uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+        <span className="text-xs font-black uppercase tracking-wider text-blue-800 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">
           Travel Mobile Accessories
         </span>
         <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
@@ -47,13 +47,13 @@ export const AccessoriesShop: React.FC<AccessoriesShopProps> = ({ products, onAd
         {accessories.map((acc) => (
           <div
             key={acc.id}
-            className="bg-white border border-slate-200 hover:border-emerald-500/80 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-xl group cursor-pointer"
+            className="bg-white border border-slate-200 hover:border-blue-500/80 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-xs hover:shadow-xl group cursor-pointer"
             onClick={() => onSelectProduct?.(acc)}
           >
             <div>
               <div className="relative aspect-4/3 rounded-2xl bg-slate-50 overflow-hidden mb-5 border border-slate-100 flex items-center justify-center p-4">
                 {acc.badge && (
-                  <span className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-md bg-emerald-600 text-[10px] font-black text-white shadow-xs">
+                  <span className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-md bg-blue-600 text-[10px] font-black text-white shadow-xs">
                     {acc.badge}
                   </span>
                 )}
@@ -77,7 +77,7 @@ export const AccessoriesShop: React.FC<AccessoriesShopProps> = ({ products, onAd
                   }}
                 />
 
-                <div className="absolute inset-0 bg-slate-900/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div className="absolute inset-0 bg-slate-950/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <span className="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-black shadow-lg">
                     View Specs & Details
                   </span>
@@ -85,7 +85,7 @@ export const AccessoriesShop: React.FC<AccessoriesShopProps> = ({ products, onAd
               </div>
 
               <div className="flex items-center justify-between text-xs text-slate-500 mb-1 font-semibold">
-                <span className="font-extrabold uppercase tracking-wider text-emerald-700">{acc.brand}</span>
+                <span className="font-extrabold uppercase tracking-wider text-blue-600">{acc.brand}</span>
                 <div className="flex items-center gap-1 text-amber-500 text-[11px] font-bold">
                   <Star className="w-3.5 h-3.5 fill-amber-400" />
                   <span>{acc.rating}</span>
@@ -93,7 +93,7 @@ export const AccessoriesShop: React.FC<AccessoriesShopProps> = ({ products, onAd
                 </div>
               </div>
 
-              <h3 className="text-lg font-extrabold text-slate-900 group-hover:text-emerald-700 transition-colors">
+              <h3 className="text-lg font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors">
                 {acc.name}
               </h3>
 
@@ -118,10 +118,10 @@ export const AccessoriesShop: React.FC<AccessoriesShopProps> = ({ products, onAd
                   e.stopPropagation();
                   handleAdd(acc);
                 }}
-                className={`px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-1.5 shadow-sm cursor-pointer ${
+                className={`px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-1.5 shadow-xs cursor-pointer ${
                   addedId === acc.id
-                    ? 'bg-emerald-600 text-white'
-                    : 'bg-emerald-600 hover:bg-emerald-500 text-white'
+                    ? 'bg-blue-700 text-white'
+                    : 'bg-blue-600 hover:bg-blue-500 text-white'
                 }`}
               >
                 {addedId === acc.id ? (

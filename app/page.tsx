@@ -1,85 +1,53 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
-import { RatesTicker } from '@/components/RatesTicker';
 import { HeroSection } from '@/components/HeroSection';
-import { CurrencyConverter } from '@/components/CurrencyConverter';
-import { RatesTable } from '@/components/RatesTable';
-import { PhonesCatalog } from '@/components/PhonesCatalog';
-import { AccessoriesShop } from '@/components/AccessoriesShop';
-import { PhoneTradeInCalculator } from '@/components/PhoneTradeInCalculator';
-import { AiAdvisor } from '@/components/AiAdvisor';
-import StoreLocator from '@/components/StoreLocator';
-import { StoreInfoFooter } from '@/components/StoreInfoFooter';
-import { CartDrawer } from '@/components/CartDrawer';
+import { MoneyRemittanceSection } from '@/components/MoneyRemittanceSection';
+import { RemittanceModal } from '@/components/RemittanceModal';
+import { CurrencyExchangeSection } from '@/components/CurrencyExchangeSection';
 import { CurrencyReserveModal } from '@/components/CurrencyReserveModal';
-import { ReservationsModal } from '@/components/ReservationsModal';
+import { SecurityTrustSection } from '@/components/SecurityTrustSection';
+import { HowItWorks } from '@/components/HowItWorks';
+import { MobileTechSection } from '@/components/MobileTechSection';
+import { AdultRetailSection } from '@/components/AdultRetailSection';
+import { RegulatoryInfoView } from '@/components/RegulatoryInfoView';
+import { ComplaintsView } from '@/components/ComplaintsView';
+import { AboutUsView } from '@/components/AboutUsView';
+import { ContactSection } from '@/components/ContactSection';
+import { FaqSection } from '@/components/FaqSection';
+import { Footer } from '@/components/Footer';
+import { CartDrawer } from '@/components/CartDrawer';
 import { ProductDetailModal } from '@/components/ProductDetailModal';
 
+import { ActivePageTab, CartItem, Currency, Product, RemittanceTransferOrder, ReservationVoucher } from '@/lib/types';
 import { INITIAL_CURRENCIES } from '@/lib/currency-data';
-import { FEATURED_PRODUCTS } from '@/lib/product-data';
-import { Currency, CartItem, ReservationVoucher, Product, StoreBranch } from '@/lib/types';
 import { MessageCircle } from 'lucide-react';
 
 export default function HomePage() {
-  const [currencies, setCurrencies] = useState<Currency[]>(INITIAL_CURRENCIES);
-  const [lastUpdated, setLastUpdated] = useState<string | undefined>(undefined);
-  const [isLoadingRates, setIsLoadingRates] = useState<boolean>(false);
-
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [vouchers, setVouchers] = useState<ReservationVoucher[]>([]);
+  const [activeTab, setActiveTab] = useState<ActivePageTab>('home');
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('wahla_cart');
+        return saved ? JSON.parse(saved) : [];
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  });
 
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isVouchersOpen, setIsVouchersOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  // Reserve modal state
+  // Remittance Modal state
+  const [isRemittanceModalOpen, setIsRemittanceModalOpen] = useState(false);
+  const [remittanceModalGbp, setRemittanceModalGbp] = useState(500);
+  const [remittanceModalCorridor, setRemittanceModalCorridor] = useState('PKR');
+
+  // Currency Reserve Modal state
   const [selectedReserveCurrency, setSelectedReserveCurrency] = useState<Currency | null>(null);
-  const [reserveForeignAmount, setReserveForeignAmount] = useState<number | undefined>(undefined);
-  const [reserveCostGbp, setReserveCostGbp] = useState<number | undefined>(undefined);
-
-  // Fetch live exchange rates from NetDania FX API
-  const fetchLiveRates = useCallback(async () => {
-    setIsLoadingRates(true);
-    try {
-      const res = await fetch('/api/live-rates');
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success && Array.isArray(data.currencies) && data.currencies.length > 0) {
-          setCurrencies(data.currencies);
-          setLastUpdated(data.lastUpdated);
-        }
-      }
-    } catch (err) {
-      console.error('Error fetching live NetDania FX rates:', err);
-    } finally {
-      setIsLoadingRates(false);
-    }
-  }, []);
-
-  // On mount: load local storage & start live rate polling
-  useEffect(() => {
-    try {
-      const savedCart = localStorage.getItem('wahla_cart');
-      if (savedCart) setCartItems(JSON.parse(savedCart));
-
-      const savedVouchers = localStorage.getItem('wahla_vouchers');
-      if (savedVouchers) setVouchers(JSON.parse(savedVouchers));
-    } catch (e) {
-      console.error('Failed to load from local storage:', e);
-    }
-
-    // Initial fetch of NetDania FX rates
-    fetchLiveRates();
-
-    // Poll every 30 seconds for real-time market updates
-    const interval = setInterval(() => {
-      fetchLiveRates();
-    }, 30000);
-
-    return () => clearInterval(interval);
-  }, [fetchLiveRates]);
 
   // Sync cart to localStorage
   useEffect(() => {
@@ -90,17 +58,17 @@ export default function HomePage() {
     }
   }, [cartItems]);
 
-  // Sync vouchers to localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem('wahla_vouchers', JSON.stringify(vouchers));
-    } catch (e) {
-      console.error('Failed to save vouchers:', e);
-    }
-  }, [vouchers]);
+  const handleAddToCart = (product: Product) => {
+    const newItem: CartItem = {
+      id: product.id,
+      name: product.name,
+      subtitle: product.brand,
+      price: product.price,
+      type: product.category === 'vapes' ? 'vape' : 'phone',
+      image: product.image,
+      quantity: 1,
+    };
 
-  // Handlers for cart
-  const handleAddToCart = (newItem: CartItem) => {
     setCartItems((prev) => {
       const existing = prev.find((item) => item.id === newItem.id);
       if (existing) {
@@ -110,6 +78,8 @@ export default function HomePage() {
       }
       return [...prev, newItem];
     });
+
+    setIsCartOpen(true);
   };
 
   const handleRemoveFromCart = (id: string) => {
@@ -132,98 +102,141 @@ export default function HomePage() {
 
   const handleClearCart = () => setCartItems([]);
 
-  // Handlers for Currency Reservation
-  const handleOpenReserve = (curr: Currency, amountForeign?: number, costGbp?: number) => {
-    setSelectedReserveCurrency(curr);
-    setReserveForeignAmount(amountForeign);
-    setReserveCostGbp(costGbp);
+  const handleOpenRemittance = (amountGbp?: number, corridorCode?: string) => {
+    if (amountGbp) setRemittanceModalGbp(amountGbp);
+    if (corridorCode) setRemittanceModalCorridor(corridorCode);
+    setIsRemittanceModalOpen(true);
   };
 
-  const handleConfirmReservation = (voucher: ReservationVoucher) => {
-    setVouchers((prev) => [voucher, ...prev]);
-    setIsVouchersOpen(true);
-  };
-
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const handleTabChange = (tab: ActivePageTab) => {
+    setActiveTab(tab);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans selection:bg-emerald-500 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-[#F6F8FA] text-[#172033] font-sans antialiased">
       
       {/* Top Navbar */}
       <Navbar
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+        cartCount={cartItems.reduce((acc, item) => acc + item.quantity, 0)}
         onOpenCart={() => setIsCartOpen(true)}
-        onOpenReservations={() => setIsVouchersOpen(true)}
-        cartCount={cartItems.reduce((acc, i) => acc + i.quantity, 0)}
-        reservationsCount={vouchers.length}
-        onSelectCategory={scrollToSection}
+        onOpenRemittanceModal={() => handleOpenRemittance()}
       />
 
-      {/* Live Marquee Ticker */}
-      <RatesTicker currencies={currencies} />
-
-      {/* Hero Section */}
-      <HeroSection
-        onExploreRates={() => scrollToSection('currency-exchange')}
-        onExplorePhones={() => scrollToSection('smartphones')}
-      />
-
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 space-y-12 sm:space-y-16 py-8">
+      {/* View Router / Homepage Content */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
         
-        {/* Currency Exchange & Live Calculator Grid */}
-        <section id="currency-exchange" className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          <div className="lg:col-span-7">
-            <RatesTable
-              currencies={currencies}
-              onReserve={(curr) => handleOpenReserve(curr)}
-              lastUpdated={lastUpdated}
-              isLoading={isLoadingRates}
-              onRefresh={fetchLiveRates}
+        {activeTab === 'home' && (
+          <>
+            {/* 1. Hero Section */}
+            <HeroSection
+              onSendMoneyClick={(gbp, corridor) => handleOpenRemittance(gbp, corridor)}
+              onExploreFxClick={() => {
+                const el = document.getElementById('currency-exchange');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
             />
-          </div>
 
-          <div className="lg:col-span-5">
-            <CurrencyConverter
-              currencies={currencies}
-              onReserveVoucher={(curr, foreign, gbp) => handleOpenReserve(curr, foreign, gbp)}
+            {/* 2. Money Remittance (WAHLA MONEY) */}
+            <MoneyRemittanceSection
+              onOpenRemittanceModal={(gbp, corridor) => handleOpenRemittance(gbp, corridor)}
             />
-          </div>
-        </section>
 
-        {/* Unlocked Smartphones Catalog */}
-        <PhonesCatalog
-          products={FEATURED_PRODUCTS}
-          onAddToCart={handleAddToCart}
-          onSelectProduct={(product) => setSelectedProduct(product)}
-        />
+            {/* 3. Currency Exchange (WAHLA FX) */}
+            <CurrencyExchangeSection
+              onReserveCurrency={(curr) => setSelectedReserveCurrency(curr)}
+            />
 
-        {/* Trade-In Calculator */}
-        <PhoneTradeInCalculator />
+            {/* 4. Security & Trust Section */}
+            <SecurityTrustSection />
 
-        {/* Travel Accessories & eSIM */}
-        <AccessoriesShop
-          products={FEATURED_PRODUCTS}
-          onAddToCart={handleAddToCart}
-          onSelectProduct={(product) => setSelectedProduct(product)}
-        />
+            {/* 5. How It Works */}
+            <HowItWorks />
 
-        {/* Gemini AI Travel Advisor */}
-        <AiAdvisor />
+            {/* 6. Mobile & Tech (WAHLA TECH) Preview */}
+            <MobileTechSection
+              onAddToCart={handleAddToCart}
+              onOpenProductDetail={(prod) => setSelectedProduct(prod)}
+            />
 
-        {/* Store Counter & Map Location */}
-        <StoreLocator
-          onSelectBranch={(branch: StoreBranch) => {
-            scrollToSection('currency-exchange');
-          }}
-        />
+            {/* 7. FAQs */}
+            <FaqSection />
+
+            {/* 8. Contact & Branch */}
+            <ContactSection />
+          </>
+        )}
+
+        {activeTab === 'remittance' && (
+          <MoneyRemittanceSection
+            onOpenRemittanceModal={(gbp, corridor) => handleOpenRemittance(gbp, corridor)}
+          />
+        )}
+
+        {activeTab === 'currency-exchange' && (
+          <CurrencyExchangeSection
+            onReserveCurrency={(curr) => setSelectedReserveCurrency(curr)}
+          />
+        )}
+
+        {activeTab === 'mobile-tech' && (
+          <MobileTechSection
+            onAddToCart={handleAddToCart}
+            onOpenProductDetail={(prod) => setSelectedProduct(prod)}
+          />
+        )}
+
+        {activeTab === 'vapes-retail' && (
+          <AdultRetailSection onAddToCart={handleAddToCart} />
+        )}
+
+        {activeTab === 'regulatory-info' && <RegulatoryInfoView />}
+
+        {activeTab === 'complaints' && <ComplaintsView />}
+
+        {activeTab === 'about-us' && <AboutUsView />}
+
+        {activeTab === 'contact' && <ContactSection />}
 
       </main>
 
-      {/* Footer & Store Location */}
-      <StoreInfoFooter />
+      {/* Footer */}
+      <Footer onTabChange={handleTabChange} />
+
+      {/* Remittance Quote & Order Modal */}
+      <RemittanceModal
+        isOpen={isRemittanceModalOpen}
+        onClose={() => setIsRemittanceModalOpen(false)}
+        initialSendGbp={remittanceModalGbp}
+        initialCorridorCode={remittanceModalCorridor}
+        onConfirmOrder={(order: RemittanceTransferOrder) => {
+          console.log('Remittance order created:', order);
+        }}
+      />
+
+      {/* Currency Exchange Reserve Modal */}
+      {selectedReserveCurrency && (
+        <CurrencyReserveModal
+          isOpen={!!selectedReserveCurrency}
+          onClose={() => setSelectedReserveCurrency(null)}
+          currency={selectedReserveCurrency}
+          onConfirmReservation={(voucher: ReservationVoucher) => {
+            console.log('Voucher created:', voucher);
+          }}
+        />
+      )}
+
+      {/* Product Detail Modal */}
+      {selectedProduct && (
+        <ProductDetailModal
+          product={selectedProduct}
+          isOpen={!!selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          onAddToCart={handleAddToCart}
+        />
+      )}
 
       {/* Cart Drawer */}
       <CartDrawer
@@ -235,43 +248,16 @@ export default function HomePage() {
         onClearCart={handleClearCart}
       />
 
-      {/* Product Detail Modal */}
-      <ProductDetailModal
-        product={selectedProduct}
-        isOpen={!!selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-        onAddToCart={handleAddToCart}
-      />
-
-      {/* Reserve Voucher Modal */}
-      {selectedReserveCurrency && (
-        <CurrencyReserveModal
-          isOpen={!!selectedReserveCurrency}
-          onClose={() => setSelectedReserveCurrency(null)}
-          currency={selectedReserveCurrency}
-          initialAmountForeign={reserveForeignAmount}
-          initialCostGbp={reserveCostGbp}
-          onConfirmReservation={handleConfirmReservation}
-        />
-      )}
-
-      {/* Reservations / Vouchers Modal */}
-      <ReservationsModal
-        isOpen={isVouchersOpen}
-        onClose={() => setIsVouchersOpen(false)}
-        vouchers={vouchers}
-      />
-
-      {/* Floating WhatsApp Quick Action */}
+      {/* Floating WhatsApp Desk Action */}
       <a
         href="https://wa.me/441412660379"
         target="_blank"
         rel="noreferrer"
-        className="fixed bottom-6 right-6 z-40 p-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-lg transition-transform hover:scale-105 flex items-center gap-2 font-black text-xs group cursor-pointer"
-        title="Chat with Glasgow Store on WhatsApp"
+        className="fixed bottom-6 right-6 z-40 p-3.5 bg-[#155EEF] hover:bg-blue-600 text-white rounded-full shadow-xl transition-all hover:scale-105 flex items-center gap-2 font-bold text-xs group cursor-pointer border border-blue-400/30"
+        title="Chat with Glasgow Store Desk"
       >
-        <MessageCircle className="w-5 h-5 fill-white text-emerald-600" />
-        <span className="hidden group-hover:inline pr-1">WhatsApp Glasgow Counter</span>
+        <MessageCircle className="w-5 h-5 fill-white text-blue-600" />
+        <span className="hidden group-hover:inline pr-1">Glasgow Counter WhatsApp</span>
       </a>
 
     </div>

@@ -1,24 +1,31 @@
 'use client';
 
 import React, { useState } from 'react';
-import Navbar from '@/components/Navbar';
-import PhonesCatalog from '@/components/PhonesCatalog';
-import AccessoriesShop from '@/components/AccessoriesShop';
-import StoreInfoFooter from '@/components/StoreInfoFooter';
-import CartDrawer from '@/components/CartDrawer';
-import ReservationsModal from '@/components/ReservationsModal';
-import ProductDetailModal from '@/components/ProductDetailModal';
-import { FEATURED_PRODUCTS, PHONES_DATA, ACCESSORIES_DATA } from '@/lib/product-data';
-import { CartItem, ReservationVoucher, Product } from '@/lib/types';
+import { Navbar } from '@/components/Navbar';
+import { MobileTechSection } from '@/components/MobileTechSection';
+import { Footer } from '@/components/Footer';
+import { CartDrawer } from '@/components/CartDrawer';
+import { ProductDetailModal } from '@/components/ProductDetailModal';
+import { CartItem, Product, ActivePageTab } from '@/lib/types';
+import { useRouter } from 'next/navigation';
 
 export default function ProductsPage() {
+  const router = useRouter();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [vouchers, setVouchers] = useState<ReservationVoucher[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isVouchersOpen, setIsVouchersOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  const handleAddToCart = (newItem: CartItem) => {
+  const handleAddToCart = (product: Product) => {
+    const newItem: CartItem = {
+      id: product.id,
+      name: product.name,
+      subtitle: product.brand,
+      price: product.price,
+      type: 'phone',
+      image: product.image,
+      quantity: 1,
+    };
+
     setCartItems((prev) => {
       const existing = prev.find((item) => item.id === newItem.id);
       if (existing) {
@@ -28,6 +35,8 @@ export default function ProductsPage() {
       }
       return [...prev, newItem];
     });
+
+    setIsCartOpen(true);
   };
 
   const handleRemoveFromCart = (id: string) => {
@@ -50,43 +59,28 @@ export default function ProductsPage() {
 
   const handleClearCart = () => setCartItems([]);
 
-  const productsList = FEATURED_PRODUCTS || [];
+  const handleTabChange = (tab: ActivePageTab) => {
+    router.push('/');
+  };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0F1115] text-slate-100 font-sans selection:bg-teal-500 selection:text-slate-950">
+    <div className="min-h-screen flex flex-col bg-[#F6F8FA] text-[#172033] font-sans antialiased">
       <Navbar
-        onOpenCart={() => setIsCartOpen(true)}
-        onOpenReservations={() => setIsVouchersOpen(true)}
+        activeTab="mobile-tech"
+        onTabChange={handleTabChange}
         cartCount={cartItems.reduce((acc, i) => acc + i.quantity, 0)}
-        reservationsCount={vouchers.length}
+        onOpenCart={() => setIsCartOpen(true)}
+        onOpenRemittanceModal={() => router.push('/')}
       />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-10 space-y-12">
-        <div className="border-b border-slate-800 pb-6">
-          <span className="text-xs font-bold uppercase tracking-wider text-teal-400">
-            Glasgow Tech Center
-          </span>
-          <h1 className="text-3xl font-black text-white mt-1">
-            Unlocked Phones & Travel Accessories
-          </h1>
-          <p className="text-sm text-slate-400 mt-1">
-            Reserve online and pay on pickup at 22 Maxwell Road, Glasgow, G41 1QE.
-          </p>
-        </div>
-
-        <PhonesCatalog
-          products={productsList}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <MobileTechSection
           onAddToCart={handleAddToCart}
-          onSelectProduct={(product) => setSelectedProduct(product)}
-        />
-        <AccessoriesShop
-          products={productsList}
-          onAddToCart={handleAddToCart}
-          onSelectProduct={(product) => setSelectedProduct(product)}
+          onOpenProductDetail={(product) => setSelectedProduct(product)}
         />
       </main>
 
-      <StoreInfoFooter />
+      <Footer onTabChange={handleTabChange} />
 
       <CartDrawer
         isOpen={isCartOpen}
@@ -97,18 +91,14 @@ export default function ProductsPage() {
         onClearCart={handleClearCart}
       />
 
-      <ProductDetailModal
-        product={selectedProduct}
-        isOpen={!!selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-        onAddToCart={handleAddToCart}
-      />
-
-      <ReservationsModal
-        isOpen={isVouchersOpen}
-        onClose={() => setIsVouchersOpen(false)}
-        vouchers={vouchers}
-      />
+      {selectedProduct && (
+        <ProductDetailModal
+          product={selectedProduct}
+          isOpen={!!selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          onAddToCart={handleAddToCart}
+        />
+      )}
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ReservationVoucher } from '@/lib/types';
-import { X, Ticket, CheckCircle2, MapPin, Printer } from 'lucide-react';
+import { X, Ticket } from 'lucide-react';
 
 interface ReservationsModalProps {
   isOpen: boolean;
@@ -15,16 +15,16 @@ export const ReservationsModal: React.FC<ReservationsModalProps> = ({ isOpen, on
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-[#14171F] border border-slate-800 rounded-3xl p-6 text-slate-100 shadow-2xl relative">
+      <div className="w-full max-w-2xl bg-[#0F172A] border border-slate-800 rounded-3xl p-6 text-slate-100 shadow-2xl relative">
         
         <div className="flex items-center justify-between pb-4 border-b border-slate-800">
           <div className="flex items-center gap-2">
-            <Ticket className="w-5 h-5 text-teal-400" />
+            <Ticket className="w-5 h-5 text-cyan-400" />
             <h2 className="text-xl font-black text-white">Your Currency Vouchers</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
+            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -43,11 +43,11 @@ export const ReservationsModal: React.FC<ReservationsModalProps> = ({ isOpen, on
             vouchers.map((v) => (
               <div
                 key={v.id}
-                className="p-4 rounded-2xl bg-[#0B0D12] border border-teal-900/60 space-y-3 relative overflow-hidden"
+                className="p-4 rounded-2xl bg-slate-950 border border-blue-900/60 space-y-3 relative overflow-hidden"
               >
                 <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                  <span className="text-xs font-mono font-bold text-teal-400">VOUCHER ID: {v.id}</span>
-                  <span className="px-2 py-0.5 text-[10px] bg-teal-950 text-teal-300 font-extrabold rounded border border-teal-800">
+                  <span className="text-xs font-mono font-bold text-cyan-400">VOUCHER ID: {v.id}</span>
+                  <span className="px-2 py-0.5 text-[10px] bg-blue-950 text-cyan-300 font-extrabold rounded border border-blue-800">
                     {v.status}
                   </span>
                 </div>
@@ -61,7 +61,7 @@ export const ReservationsModal: React.FC<ReservationsModalProps> = ({ isOpen, on
                   </div>
                   <div>
                     <span className="text-slate-500 block text-[10px]">GBP Cost (0% Fee)</span>
-                    <strong className="text-base text-teal-400 font-black">£{v.costGbp.toFixed(2)} GBP</strong>
+                    <strong className="text-base text-cyan-400 font-black">£{v.costGbp.toFixed(2)} GBP</strong>
                   </div>
                 </div>
 
@@ -80,4 +80,3 @@ export const ReservationsModal: React.FC<ReservationsModalProps> = ({ isOpen, on
 };
 
 export default ReservationsModal;
-

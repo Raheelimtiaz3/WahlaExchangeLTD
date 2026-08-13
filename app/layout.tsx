@@ -26,7 +26,7 @@ export default function RootLayout({
       <head>
         <meta name="google-site-verification" content="342SHCX8WHDYuF7iMQEIGVQwqrV2ooXj0snOS8sR578" />
       </head>
-      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-emerald-600 selection:text-white">
+      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-blue-600 selection:text-white">
         {children}
       </body>
     </html>

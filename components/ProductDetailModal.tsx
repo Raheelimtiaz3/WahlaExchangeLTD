@@ -37,11 +37,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     if (product) {
       const defaultStorage = product.storageOptions?.[0] || '256GB';
       const defaultColor = product.colorVariants?.[0] || null;
-      setSelectedStorage(defaultStorage);
-      setSelectedColor(defaultColor);
-      setCurrentImage(defaultColor?.image || product.image);
-      setQuantity(1);
-      setIsAdded(false);
+      queueMicrotask(() => {
+        setSelectedStorage(defaultStorage);
+        setSelectedColor(defaultColor);
+        setCurrentImage(defaultColor?.image || product.image);
+        setQuantity(1);
+        setIsAdded(false);
+      });
     }
   }, [product]);
 
@@ -103,7 +105,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 overflow-y-auto">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
@@ -113,7 +115,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         {/* Header bar */}
         <div className="sticky top-0 z-20 flex items-center justify-between px-6 py-4 bg-white/90 backdrop-blur-md border-b border-slate-100">
           <div className="flex items-center gap-2.5">
-            <span className="px-2.5 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
+            <span className="px-2.5 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-blue-50 text-blue-800 border border-blue-200">
               {product.brand}
             </span>
             <span className="text-xs text-slate-500 font-bold truncate max-w-[200px] sm:max-w-xs">
@@ -137,7 +139,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           <div className="md:col-span-5 flex flex-col items-center space-y-4">
             <div className="relative w-full aspect-square rounded-2xl bg-slate-50 border border-slate-200 p-6 flex items-center justify-center overflow-hidden group">
               {product.badge && (
-                <span className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-md bg-emerald-600 text-[10px] font-black text-white shadow-xs">
+                <span className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-md bg-blue-600 text-[10px] font-black text-white shadow-xs">
                   {product.badge}
                 </span>
               )}
@@ -167,7 +169,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               <div className="w-full space-y-2">
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-bold text-slate-600">Color Variant:</span>
-                  <span className="font-extrabold text-emerald-700">{selectedColor?.name || 'Default'}</span>
+                  <span className="font-extrabold text-blue-600">{selectedColor?.name || 'Default'}</span>
                 </div>
                 <div className="flex items-center gap-3 pt-1">
                   {product.colorVariants.map((color) => (
@@ -176,7 +178,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       onClick={() => handleColorChange(color)}
                       className={`relative flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all cursor-pointer ${
                         selectedColor?.name === color.name
-                          ? 'border-emerald-600 scale-110 shadow-sm'
+                          ? 'border-blue-600 scale-110 shadow-xs'
                           : 'border-slate-300 hover:border-slate-400'
                       }`}
                       style={{ backgroundColor: color.hex }}
@@ -193,15 +195,15 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
             {/* Store Guarantee Box */}
             <div className="w-full p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs text-slate-700 font-medium">
-              <div className="flex items-center gap-2 font-black text-emerald-800">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+              <div className="flex items-center gap-2 font-black text-blue-900">
+                <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0" />
                 <span>Wahla Store Guarantee Included</span>
               </div>
               <p className="text-[11px] text-slate-600 leading-relaxed font-medium">
                 All devices are 100% genuine, fully factory unlocked, tested by technicians, and backed by a 1-Year Glasgow Store Warranty.
               </p>
               <div className="pt-1 flex items-center gap-1.5 text-[10px] text-slate-600 font-bold border-t border-slate-200">
-                <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <MapPin className="w-3.5 h-3.5 text-blue-600 shrink-0" />
                 <span>Pickup Available: 22 Maxwell Road, Glasgow, G41 1QE</span>
               </div>
             </div>
@@ -222,7 +224,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     <span>{product.rating.toFixed(1)}</span>
                   </div>
                   <span className="text-xs text-slate-500 font-medium">({product.reviewsCount} customer reviews)</span>
-                  <span className="text-xs font-black text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  <span className="text-xs font-black text-blue-800 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
                     In Stock at Glasgow Counter
                   </span>
                 </div>
@@ -245,7 +247,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </div>
 
                 <div className="text-right">
-                  <span className="text-[10px] text-emerald-700 font-black uppercase block">0% Commission</span>
+                  <span className="text-[10px] text-blue-600 font-black uppercase block">0% Commission</span>
                   <span className="text-[11px] text-slate-500 font-medium">VAT Receipt Provided</span>
                 </div>
               </div>
@@ -262,7 +264,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     <label className="block text-xs font-bold text-slate-700">
                       Select Memory Capacity:
                     </label>
-                    <span className="text-[11px] text-emerald-700 font-black">
+                    <span className="text-[11px] text-blue-600 font-black">
                       Separate Storage Pricing
                     </span>
                   </div>
@@ -278,14 +280,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           onClick={() => setSelectedStorage(storage)}
                           className={`p-3 rounded-xl text-left flex flex-col justify-between border transition-all cursor-pointer ${
                             isSelected
-                              ? 'bg-slate-900 border-slate-900 text-white shadow-sm'
+                              ? 'bg-blue-600 border-blue-600 text-white shadow-xs'
                               : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300'
                           }`}
                         >
                           <span className={`text-xs font-black ${isSelected ? 'text-white' : 'text-slate-900'}`}>
                             {storage}
                           </span>
-                          <span className={`text-[11px] font-extrabold mt-1 ${isSelected ? 'text-emerald-400' : 'text-emerald-700'}`}>
+                          <span className={`text-[11px] font-extrabold mt-1 ${isSelected ? 'text-cyan-200' : 'text-blue-600'}`}>
                             £{optPrice.toFixed(2)}
                           </span>
                         </button>
@@ -339,10 +341,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 {/* Add to Cart Button */}
                 <button
                   onClick={handleAddToCart}
-                  className={`flex-1 py-3.5 px-6 rounded-xl font-black text-sm transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer ${
+                  className={`flex-1 py-3.5 px-6 rounded-xl font-black text-sm transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer ${
                     isAdded
-                      ? 'bg-emerald-700 text-white'
-                      : 'bg-emerald-600 hover:bg-emerald-500 text-white'
+                      ? 'bg-blue-700 text-white'
+                      : 'bg-blue-600 hover:bg-blue-500 text-white'
                   }`}
                 >
                   {isAdded ? (
@@ -366,9 +368,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 )}`}
                 target="_blank"
                 rel="noreferrer"
-                className="w-full py-2.5 px-4 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-emerald-700 font-extrabold text-xs flex items-center justify-center gap-2 transition-colors"
+                className="w-full py-2.5 px-4 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-blue-700 font-extrabold text-xs flex items-center justify-center gap-2 transition-colors"
               >
-                <MessageCircle className="w-4 h-4 text-emerald-600" />
+                <MessageCircle className="w-4 h-4 text-blue-600" />
                 <span>Ask Glasgow Counter on WhatsApp</span>
               </a>
             </div>

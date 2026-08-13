@@ -54,11 +54,11 @@ export const AiAdvisor: React.FC = () => {
 
   return (
     <div id="ai-advisor" className="py-8">
-      <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden">
+      <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200 mb-2">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+            <div className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-blue-800 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200 mb-2">
+              <Sparkles className="w-3.5 h-3.5 text-blue-600" />
               <span>AI Travel & Currency Expert</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
@@ -94,7 +94,7 @@ export const AiAdvisor: React.FC = () => {
               type="text"
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
-              className="w-full py-2.5 px-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
               placeholder="e.g. Japan, Turkey, UAE"
               required
             />
@@ -106,7 +106,7 @@ export const AiAdvisor: React.FC = () => {
               type="number"
               value={days}
               onChange={(e) => setDays(parseInt(e.target.value) || 1)}
-              className="w-full py-2.5 px-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
               min="1"
             />
           </div>
@@ -117,7 +117,7 @@ export const AiAdvisor: React.FC = () => {
               type="number"
               value={budgetUsd}
               onChange={(e) => setBudgetUsd(parseInt(e.target.value) || 100)}
-              className="w-full py-2.5 px-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
           </div>
 
@@ -127,7 +127,7 @@ export const AiAdvisor: React.FC = () => {
               type="text"
               value={phoneModel}
               onChange={(e) => setPhoneModel(e.target.value)}
-              className="w-full py-2.5 px-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
               placeholder="e.g. iPhone 15 Pro, Galaxy S24"
             />
           </div>
@@ -139,13 +139,13 @@ export const AiAdvisor: React.FC = () => {
                 type="text"
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
-                className="w-full py-2.5 px-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
                 placeholder="e.g. Do small shops accept credit cards? Is eSIM supported on my phone?"
               />
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-black text-xs rounded-xl transition-all shrink-0 flex items-center gap-1.5 shadow-sm cursor-pointer"
+                className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-black text-xs rounded-xl transition-all shrink-0 flex items-center gap-1.5 shadow-xs cursor-pointer"
               >
                 {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
                 <span>{loading ? 'Analyzing...' : 'Generate Plan'}</span>
@@ -155,9 +155,9 @@ export const AiAdvisor: React.FC = () => {
         </form>
 
         {advice && (
-          <div className="mt-6 p-5 sm:p-6 rounded-2xl bg-emerald-50/60 border border-emerald-200 space-y-3 text-xs sm:text-sm text-slate-800 leading-relaxed animate-in fade-in duration-300">
-            <div className="flex items-center gap-2 pb-3 border-b border-emerald-200 text-emerald-900 font-extrabold text-sm">
-              <Bot className="w-4 h-4 text-emerald-700" />
+          <div className="mt-6 p-5 sm:p-6 rounded-2xl bg-blue-50/70 border border-blue-200 space-y-3 text-xs sm:text-sm text-slate-800 leading-relaxed animate-in fade-in duration-300">
+            <div className="flex items-center gap-2 pb-3 border-b border-blue-200 text-blue-950 font-extrabold text-sm">
+              <Bot className="w-4 h-4 text-blue-600" />
               <span>AI Travel Advisor Analysis for {destination}</span>
             </div>
             <div className="whitespace-pre-wrap font-sans text-slate-700 space-y-2">

@@ -1,6 +1,6 @@
 {
-  "name": "Wahla Exchange LTD",
-  "description": "Zero-Commission Foreign Currency Exchange & Premium Mobile Tech Counter in Glasgow, UK",
+  "name": "Wahla Exchange Ltd | Money Remittance & Currency Exchange",
+  "description": "Professional UK Money Remittance, Foreign Currency Exchange & Mobile Tech Counter in Glasgow, UK. PSD Agent FRN 1061169.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

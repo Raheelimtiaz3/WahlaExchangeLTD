@@ -1,97 +1,186 @@
 'use client';
 
 import React from 'react';
-import { Banknote, Smartphone, ShieldCheck, MapPin, PhoneCall, Clock, CheckCircle2 } from 'lucide-react';
+import { ActivePageTab } from '@/lib/types';
+import { REGULATORY_DETAILS, GLASGOW_BRANCH } from '@/lib/remittance-data';
+import { ShieldCheck, ExternalLink, MapPin, PhoneCall, Mail } from 'lucide-react';
 
-export default function Footer() {
+interface FooterProps {
+  onTabChange: (tab: ActivePageTab) => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onTabChange }) => {
   return (
-    <footer className="bg-slate-900 border-t border-slate-800 text-slate-400 py-12 text-xs">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-          {/* Brand Col */}
-          <div className="lg:col-span-2 space-y-4">
+    <footer className="bg-[#0B1F33] text-slate-300 pt-12 pb-8 border-t border-slate-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        
+        {/* Top Footer Navigation Columns */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 text-xs">
+          
+          {/* Column 1: Brand & Agent Summary */}
+          <div className="col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-emerald-500 text-slate-950 font-black text-lg flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-black text-white text-lg">
                 W
               </div>
-              <span className="font-black text-lg text-white">
-                WAHLA <span className="text-emerald-400">EXCHANGE</span> LTD
-              </span>
+              <div>
+                <span className="text-lg font-extrabold text-white tracking-tight">
+                  WAHLA EXCHANGE LTD
+                </span>
+                <p className="text-[10px] text-slate-400 font-medium">
+                  Money Remittance & Currency Exchange
+                </p>
+              </div>
             </div>
 
-            <p className="text-slate-400 leading-relaxed max-w-sm font-medium">
-              Your premier licensed currency exchange counter & authorized unlocked smartphone trader. Zero commission fees on foreign cash notes, instant phone trade-in quotes, and global travel eSIMs.
+            <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
+              Providing professional UK international money remittance under a PSD Agent model and foreign currency exchange at our Glasgow counter.
             </p>
 
-            <div className="flex items-center gap-3 pt-2 text-[11px] text-slate-300 font-medium">
-              <span className="flex items-center gap-1">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" /> Licensed Bureau
-              </span>
-              <span>•</span>
-              <span className="flex items-center gap-1">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 0% Hidden Markup
-              </span>
+            <div className="space-y-1 text-[11px] text-slate-300">
+              <p className="flex items-center gap-2">
+                <MapPin className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                <span>{GLASGOW_BRANCH.address}, {GLASGOW_BRANCH.city}, {GLASGOW_BRANCH.postcode}</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <PhoneCall className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                <span>{GLASGOW_BRANCH.phone}</span>
+              </p>
             </div>
           </div>
 
-          {/* Quick Links 1 */}
+          {/* Column 2: Money Services */}
           <div className="space-y-3">
-            <h4 className="text-white font-extrabold uppercase tracking-wider text-xs">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">
+              Money Services
+            </h4>
+            <ul className="space-y-2 text-slate-400 font-medium">
+              <li>
+                <button onClick={() => onTabChange('remittance')} className="hover:text-white cursor-pointer">
+                  Money Remittance
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onTabChange('remittance')} className="hover:text-white cursor-pointer">
+                  How It Works
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onTabChange('currency-exchange')} className="hover:text-white cursor-pointer">
+                  Exchange Rates
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onTabChange('remittance')} className="hover:text-white cursor-pointer">
+                  Transfer Corridors
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 3: Currency Exchange */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">
               Currency Exchange
             </h4>
             <ul className="space-y-2 text-slate-400 font-medium">
-              <li><a href="#currency-exchange" className="hover:text-emerald-400 transition-colors">Instant Currency Calculator</a></li>
-              <li><a href="#currency-exchange" className="hover:text-emerald-400 transition-colors">Today&apos;s Exchange Rates</a></li>
-              <li><a href="#currency-exchange" className="hover:text-emerald-400 transition-colors">Reserve Currency Voucher</a></li>
-              <li><a href="#ai-advisor" className="hover:text-emerald-400 transition-colors">AI Travel Cash Advice</a></li>
+              <li>
+                <button onClick={() => onTabChange('currency-exchange')} className="hover:text-white cursor-pointer">
+                  Bureau De Change
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onTabChange('currency-exchange')} className="hover:text-white cursor-pointer">
+                  Reserve Foreign Cash
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onTabChange('contact')} className="hover:text-white cursor-pointer">
+                  Glasgow Branch Counter
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onTabChange('mobile-tech')} className="hover:text-white cursor-pointer">
+                  Mobile & Tech (WAHLA TECH)
+                </button>
+              </li>
             </ul>
           </div>
 
-          {/* Quick Links 2 */}
+          {/* Column 4: Regulation & Compliance */}
           <div className="space-y-3">
-            <h4 className="text-white font-extrabold uppercase tracking-wider text-xs">
-              Smartphones & Tech
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">
+              Regulation & Compliance
             </h4>
             <ul className="space-y-2 text-slate-400 font-medium">
-              <li><a href="#smartphones" className="hover:text-emerald-400 transition-colors">Unlocked iPhone & Galaxy</a></li>
-              <li><a href="#trade-in" className="hover:text-emerald-400 transition-colors">Phone Trade-In Calculator</a></li>
-              <li><a href="#accessories" className="hover:text-emerald-400 transition-colors">65W Travel Fast Chargers</a></li>
-              <li><a href="#accessories" className="hover:text-emerald-400 transition-colors">Global Travel eSIM Passes</a></li>
+              <li>
+                <button onClick={() => onTabChange('regulatory-info')} className="hover:text-white cursor-pointer">
+                  Regulatory Information
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onTabChange('complaints')} className="hover:text-white cursor-pointer">
+                  Complaints Policy
+                </button>
+              </li>
+              <li>
+                <a
+                  href={REGULATORY_DETAILS.fcaRegisterLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white flex items-center gap-1"
+                >
+                  <span>FCA Register Search</span>
+                  <ExternalLink className="w-3 h-3 text-blue-400" />
+                </a>
+              </li>
+              <li>
+                <button onClick={() => onTabChange('about-us')} className="hover:text-white cursor-pointer">
+                  About Us
+                </button>
+              </li>
             </ul>
           </div>
 
-          {/* Counter Hours & Contact */}
-          <div className="space-y-3">
-            <h4 className="text-white font-extrabold uppercase tracking-wider text-xs">
-              Glasgow Branch
-            </h4>
-            <div className="space-y-2 text-slate-400 font-medium">
-              <div className="flex items-start gap-2">
-                <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                <span>22 Maxwell Road, Glasgow, G41 1QE, UK</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <PhoneCall className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span>Hotline: +44 141 266 0379</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span>Glasgow Counter: Mon-Sat 8am - 9pm</span>
-              </div>
-            </div>
-          </div>
         </div>
 
-        <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500 font-medium">
-          <p>© {new Date().getFullYear()} Wahla Exchange LTD. All rights reserved.</p>
+        {/* Regulatory Disclosure Banner Box in Footer */}
+        <div className="p-5 rounded-2xl bg-[#071321] border border-slate-800 text-xs space-y-3 leading-relaxed">
+          <div className="flex items-center gap-2 text-white font-bold">
+            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span>Official Regulatory Disclosures — Wahla Exchange Ltd</span>
+          </div>
 
+          <p className="text-slate-300">
+            <strong>Money Remittance:</strong> {REGULATORY_DETAILS.remittanceDisclosure}
+          </p>
+
+          <p className="text-slate-300">
+            <strong>Currency Exchange:</strong> {REGULATORY_DETAILS.bureauDisclosure}
+          </p>
+
+          <p className="text-slate-400 text-[11px]">
+            Wahla Exchange Ltd (FCA FRN: {REGULATORY_DETAILS.fcaAgentFrn}). Principal Firm: Noble Travel and Money Exchange Ltd (FCA FRN: {REGULATORY_DETAILS.principalFrn}). Registered office and Glasgow branch: 22 Maxwell Road, Pollokshields, Glasgow, G41 1QE, Scotland, UK.
+          </p>
+        </div>
+
+        {/* Bottom Legal Copyright Strip */}
+        <div className="pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400 gap-3">
+          <p>© {new Date().getFullYear()} Wahla Exchange Ltd. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <span className="hover:text-slate-300 cursor-pointer">Privacy Policy</span>
-            <span className="hover:text-slate-300 cursor-pointer">Exchange Terms</span>
-            <span className="hover:text-slate-300 cursor-pointer">Device Warranty</span>
+            <button onClick={() => onTabChange('regulatory-info')} className="hover:text-white cursor-pointer">
+              Terms & Conditions
+            </button>
+            <button onClick={() => onTabChange('regulatory-info')} className="hover:text-white cursor-pointer">
+              Privacy Policy
+            </button>
+            <button onClick={() => onTabChange('complaints')} className="hover:text-white cursor-pointer">
+              Complaints
+            </button>
           </div>
         </div>
+
       </div>
     </footer>
   );
-}
+};
