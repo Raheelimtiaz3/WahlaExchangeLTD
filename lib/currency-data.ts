@@ -1,4 +1,4 @@
-import { Currency } from './types';
+import { Currency, StoreBranch } from './types';
 
 export const INITIAL_CURRENCIES: Currency[] = [
   {
@@ -108,5 +108,24 @@ export const INITIAL_CURRENCIES: Currency[] = [
     sellRate: 44.5,
     change24h: 0.35,
     popular: false,
+  },
+];
+
+export const STORE_BRANCHES: StoreBranch[] = [
+  {
+    id: 'glasgow-main',
+    name: 'Glasgow Main Counter Hub',
+    address: '22 Maxwell Road, Glasgow, G41 1QE, United Kingdom',
+    phone: '+44 141 266 0379',
+    hours: 'Mon-Fri 8am-9pm | Sat 8am-8pm | Sun 10am-6pm',
+    isAirport: false,
+    queueWaitTime: '< 3 mins',
+    googleMapsUrl: 'https://maps.google.com/?q=22+Maxwell+Road,+Glasgow,+G41+1QE',
+    features: [
+      '0% Commission Foreign Notes',
+      'Unlocked Smartphone Store',
+      'Instant Phone Cash Trade-In',
+      'eSIM Instant Voucher Terminal',
+    ],
   },
 ];

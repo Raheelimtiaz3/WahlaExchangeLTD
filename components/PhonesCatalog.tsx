@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Product, CartItem } from '@/lib/types';
-import { ShoppingBag, Star, Check, Smartphone, ShieldCheck } from 'lucide-react';
+import { ShoppingBag, Star, Check } from 'lucide-react';
 
 interface PhonesCatalogProps {
   products: Product[];
@@ -42,13 +42,13 @@ export const PhonesCatalog: React.FC<PhonesCatalogProps> = ({ products, onAddToC
     <div id="smartphones" className="py-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-teal-400">
+          <span className="text-xs font-black uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
             Certified Unlocked Flagships
           </span>
-          <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
-            New & Unlocked Smartphones
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
+            New & Certified Unlocked Smartphones
           </h2>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 font-medium mt-1">
             Includes 1-Year Store Guarantee • Global Frequency Support for International Travel
           </p>
         </div>
@@ -59,10 +59,10 @@ export const PhonesCatalog: React.FC<PhonesCatalogProps> = ({ products, onAddToC
             <button
               key={brand}
               onClick={() => setSelectedBrand(brand)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all capitalize shrink-0 ${
+              className={`px-4 py-2 rounded-xl text-xs font-black transition-all capitalize shrink-0 cursor-pointer ${
                 selectedBrand === brand
-                  ? 'bg-emerald-500 text-slate-950 shadow-md font-black'
-                  : 'bg-[#111827] text-slate-400 hover:text-white border border-slate-700/80'
+                  ? 'bg-slate-900 text-white shadow-md'
+                  : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200'
               }`}
             >
               {brand}
@@ -76,14 +76,14 @@ export const PhonesCatalog: React.FC<PhonesCatalogProps> = ({ products, onAddToC
         {filtered.map((phone) => (
           <div
             key={phone.id}
-            className="bg-[#111827] border border-slate-700/80 hover:border-emerald-500/50 rounded-2xl p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-xl group cursor-pointer"
+            className="bg-white border border-slate-200 hover:border-emerald-500/80 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-xl group cursor-pointer"
             onClick={() => onSelectProduct?.(phone)}
           >
             <div>
               {/* Badge & Image */}
-              <div className="relative aspect-4/3 rounded-xl bg-[#0A0F1D] overflow-hidden mb-4 border border-slate-800 flex items-center justify-center p-4">
+              <div className="relative aspect-4/3 rounded-2xl bg-slate-50 overflow-hidden mb-5 border border-slate-100 flex items-center justify-center p-4">
                 {phone.badge && (
-                  <span className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-md bg-emerald-950/90 border border-emerald-800/80 text-[10px] font-bold text-emerald-300">
+                  <span className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-md bg-emerald-600 text-[10px] font-black text-white shadow-xs">
                     {phone.badge}
                   </span>
                 )}
@@ -97,57 +97,58 @@ export const PhonesCatalog: React.FC<PhonesCatalogProps> = ({ products, onAddToC
                   }}
                 />
 
-                <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-xs font-black shadow">
-                    View Full Specs & Options
+                <div className="absolute inset-0 bg-slate-900/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span className="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-black shadow-lg">
+                    View Specs & Details
                   </span>
                 </div>
               </div>
 
               {/* Title & Brand */}
-              <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
-                <span className="font-bold uppercase tracking-wider text-emerald-400">{phone.brand}</span>
-                <div className="flex items-center gap-1 text-amber-400 text-[11px] font-bold">
+              <div className="flex items-center justify-between text-xs text-slate-500 mb-1 font-semibold">
+                <span className="font-extrabold uppercase tracking-wider text-emerald-700">{phone.brand}</span>
+                <div className="flex items-center gap-1 text-amber-500 text-[11px] font-bold">
                   <Star className="w-3.5 h-3.5 fill-amber-400" />
                   <span>{phone.rating}</span>
-                  <span className="text-slate-500">({phone.reviewsCount})</span>
+                  <span className="text-slate-400">({phone.reviewsCount})</span>
                 </div>
               </div>
 
-              <h3 className="text-lg font-black text-white group-hover:text-emerald-300 transition-colors">
+              <h3 className="text-lg font-extrabold text-slate-900 group-hover:text-emerald-700 transition-colors">
                 {phone.name}
               </h3>
 
-              <p className="text-xs text-slate-400 line-clamp-2 mt-2 leading-relaxed">
+              <p className="text-xs text-slate-500 line-clamp-2 mt-2 leading-relaxed font-medium">
                 {phone.description}
               </p>
 
               {/* Specs */}
               {phone.specs && (
-                <div className="mt-4 pt-3 border-t border-slate-800/80 text-[11px] space-y-1 text-slate-300">
+                <div className="mt-4 pt-3 border-t border-slate-100 text-[11px] space-y-1 text-slate-600 font-medium">
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Display:</span>
-                    <span className="font-semibold">{phone.specs.Screen}</span>
+                    <span className="text-slate-400">Display:</span>
+                    <span className="font-bold text-slate-800">{phone.specs.Screen}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Chipset:</span>
-                    <span className="font-semibold">{phone.specs.Processor}</span>
+                    <span className="text-slate-400">Chipset:</span>
+                    <span className="font-bold text-slate-800">{phone.specs.Processor}</span>
                   </div>
                 </div>
               )}
+
               {/* Memory Storage Price Breakdown */}
               {phone.storagePrices && phone.storagePrices.length > 0 && (
-                <div className="mt-3 pt-2.5 border-t border-slate-800/80">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-1">
-                    Memory Tier Pricing:
+                <div className="mt-3 pt-3 border-t border-slate-100">
+                  <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider block mb-1.5">
+                    Memory Options & Pricing:
                   </span>
                   <div className="flex flex-wrap gap-1.5 text-[10px]">
                     {phone.storagePrices.map((sp) => (
                       <span
                         key={sp.storage}
-                        className="px-2 py-0.5 rounded-md bg-[#0A0F1D] border border-slate-800 text-slate-200 font-bold"
+                        className="px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 font-extrabold"
                       >
-                        {sp.storage}: <span className="text-emerald-400">£{sp.price.toFixed(0)}</span>
+                        {sp.storage}: <span className="text-emerald-700">£{sp.price.toFixed(0)}</span>
                       </span>
                     ))}
                   </div>
@@ -156,13 +157,13 @@ export const PhonesCatalog: React.FC<PhonesCatalogProps> = ({ products, onAddToC
             </div>
 
             {/* Price & Add to Cart */}
-            <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
+            <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
               <div>
-                <span className="text-[10px] text-slate-500 block">Glasgow Counter Price</span>
+                <span className="text-[10px] text-slate-400 font-bold block uppercase">Glasgow Price</span>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-xl font-black text-white">£{phone.price.toFixed(2)}</span>
+                  <span className="text-2xl font-black text-slate-900">£{phone.price.toFixed(2)}</span>
                   {phone.originalPrice && (
-                    <span className="text-xs text-slate-500 line-through">£{phone.originalPrice.toFixed(2)}</span>
+                    <span className="text-xs text-slate-400 line-through font-medium">£{phone.originalPrice.toFixed(2)}</span>
                   )}
                 </div>
               </div>
@@ -172,10 +173,10 @@ export const PhonesCatalog: React.FC<PhonesCatalogProps> = ({ products, onAddToC
                   e.stopPropagation();
                   handleAdd(phone);
                 }}
-                className={`px-4 py-2.5 rounded-xl font-extrabold text-xs transition-all flex items-center gap-1.5 shadow-md ${
+                className={`px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-1.5 shadow-sm cursor-pointer ${
                   addedId === phone.id
-                    ? 'bg-emerald-400 text-slate-950'
-                    : 'bg-emerald-500 hover:bg-emerald-400 text-slate-950'
+                    ? 'bg-emerald-600 text-white'
+                    : 'bg-emerald-600 hover:bg-emerald-500 text-white'
                 }`}
               >
                 {addedId === phone.id ? (
@@ -199,4 +200,3 @@ export const PhonesCatalog: React.FC<PhonesCatalogProps> = ({ products, onAddToC
 };
 
 export default PhonesCatalog;
-

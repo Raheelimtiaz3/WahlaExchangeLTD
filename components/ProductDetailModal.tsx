@@ -8,14 +8,7 @@ import {
   ShoppingBag,
   Check,
   ShieldCheck,
-  CheckCircle2,
-  Truck,
   MapPin,
-  Smartphone,
-  Cpu,
-  Battery,
-  Camera,
-  Shield,
   MessageCircle,
   Plus,
   Minus,
@@ -110,27 +103,27 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 overflow-y-auto">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-slate-950/80 backdrop-blur-md transition-opacity"
+        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
       {/* Modal Dialog */}
-      <div className="relative w-full max-w-4xl bg-[#111827] border border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden z-10 my-auto text-slate-100 flex flex-col max-h-[92vh]">
+      <div className="relative w-full max-w-4xl bg-white border border-slate-200 rounded-3xl shadow-2xl overflow-hidden z-10 my-auto text-slate-800 flex flex-col max-h-[92vh]">
         
         {/* Header bar */}
-        <div className="sticky top-0 z-20 flex items-center justify-between px-6 py-4 bg-[#0A0F1D]/90 backdrop-blur-md border-b border-slate-800">
+        <div className="sticky top-0 z-20 flex items-center justify-between px-6 py-4 bg-white/90 backdrop-blur-md border-b border-slate-100">
           <div className="flex items-center gap-2.5">
-            <span className="px-2.5 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            <span className="px-2.5 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
               {product.brand}
             </span>
-            <span className="text-xs text-slate-400 font-medium truncate max-w-[200px] sm:max-w-xs">
+            <span className="text-xs text-slate-500 font-bold truncate max-w-[200px] sm:max-w-xs">
               {product.category === 'smartphones' ? 'Certified Unlocked Smartphone' : 'Genuine Tech Accessory'}
             </span>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
+            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
             aria-label="Close detail modal"
           >
             <X className="w-5 h-5" />
@@ -142,15 +135,15 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           
           {/* Left Column: Image & Badges */}
           <div className="md:col-span-5 flex flex-col items-center space-y-4">
-            <div className="relative w-full aspect-square rounded-2xl bg-[#0A0F1D] border border-slate-800 p-6 flex items-center justify-center overflow-hidden group">
+            <div className="relative w-full aspect-square rounded-2xl bg-slate-50 border border-slate-200 p-6 flex items-center justify-center overflow-hidden group">
               {product.badge && (
-                <span className="absolute top-3 left-3 z-10 px-3 py-1 rounded-md bg-emerald-950/90 border border-emerald-800/80 text-[11px] font-bold text-emerald-300 shadow">
+                <span className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-md bg-emerald-600 text-[10px] font-black text-white shadow-xs">
                   {product.badge}
                 </span>
               )}
 
               {discountPercent > 0 && (
-                <span className="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-md bg-rose-500 text-slate-950 text-[11px] font-black shadow">
+                <span className="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-md bg-rose-600 text-white text-[11px] font-black shadow-xs">
                   -{discountPercent}% OFF
                 </span>
               )}
@@ -173,24 +166,24 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             {product.colorVariants && product.colorVariants.length > 0 && (
               <div className="w-full space-y-2">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-bold text-slate-400">Color Variant:</span>
-                  <span className="font-extrabold text-emerald-400">{selectedColor?.name || 'Default'}</span>
+                  <span className="font-bold text-slate-600">Color Variant:</span>
+                  <span className="font-extrabold text-emerald-700">{selectedColor?.name || 'Default'}</span>
                 </div>
                 <div className="flex items-center gap-3 pt-1">
                   {product.colorVariants.map((color) => (
                     <button
                       key={color.name}
                       onClick={() => handleColorChange(color)}
-                      className={`relative flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all ${
+                      className={`relative flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all cursor-pointer ${
                         selectedColor?.name === color.name
-                          ? 'border-emerald-400 scale-110 shadow-lg shadow-emerald-950'
-                          : 'border-slate-700 hover:border-slate-500'
+                          ? 'border-emerald-600 scale-110 shadow-sm'
+                          : 'border-slate-300 hover:border-slate-400'
                       }`}
                       style={{ backgroundColor: color.hex }}
                       title={color.name}
                     >
                       {selectedColor?.name === color.name && (
-                        <Check className="w-4 h-4 text-white drop-shadow" />
+                        <Check className="w-4 h-4 text-white drop-shadow-md" />
                       )}
                     </button>
                   ))}
@@ -199,16 +192,16 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             )}
 
             {/* Store Guarantee Box */}
-            <div className="w-full p-3.5 rounded-2xl bg-[#090E1B] border border-slate-800 space-y-2 text-xs text-slate-300">
-              <div className="flex items-center gap-2 font-bold text-emerald-400">
-                <ShieldCheck className="w-4 h-4 shrink-0" />
+            <div className="w-full p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs text-slate-700 font-medium">
+              <div className="flex items-center gap-2 font-black text-emerald-800">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>Wahla Store Guarantee Included</span>
               </div>
-              <p className="text-[11px] text-slate-400 leading-normal">
+              <p className="text-[11px] text-slate-600 leading-relaxed font-medium">
                 All devices are 100% genuine, fully factory unlocked, tested by technicians, and backed by a 1-Year Glasgow Store Warranty.
               </p>
-              <div className="pt-1 flex items-center gap-1.5 text-[10px] text-slate-400 font-semibold border-t border-slate-800/80">
-                <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <div className="pt-1 flex items-center gap-1.5 text-[10px] text-slate-600 font-bold border-t border-slate-200">
+                <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                 <span>Pickup Available: 22 Maxwell Road, Glasgow, G41 1QE</span>
               </div>
             </div>
@@ -219,32 +212,32 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             <div className="space-y-4">
               {/* Title & Ratings */}
               <div>
-                <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">
                   {product.name}
                 </h2>
 
                 <div className="flex items-center gap-3 mt-2">
-                  <div className="flex items-center gap-1 text-amber-400 font-bold text-xs bg-amber-400/10 px-2 py-1 rounded-lg border border-amber-400/20">
-                    <Star className="w-4 h-4 fill-amber-400" />
+                  <div className="flex items-center gap-1 text-amber-600 font-bold text-xs bg-amber-50 px-2 py-1 rounded-lg border border-amber-200">
+                    <Star className="w-4 h-4 fill-amber-400 text-amber-500" />
                     <span>{product.rating.toFixed(1)}</span>
                   </div>
-                  <span className="text-xs text-slate-400">({product.reviewsCount} customer reviews)</span>
-                  <span className="text-xs font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800/50">
+                  <span className="text-xs text-slate-500 font-medium">({product.reviewsCount} customer reviews)</span>
+                  <span className="text-xs font-black text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                     In Stock at Glasgow Counter
                   </span>
                 </div>
               </div>
 
               {/* Price Row */}
-              <div className="p-4 rounded-2xl bg-[#090E1B] border border-slate-800 flex items-center justify-between">
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] text-slate-400 uppercase font-extrabold tracking-wider">
+                  <span className="text-[10px] text-slate-500 uppercase font-extrabold tracking-wider">
                     Glasgow Counter Price ({selectedStorage || 'Standard'})
                   </span>
                   <div className="flex items-baseline gap-3 mt-0.5">
-                    <span className="text-3xl font-black text-white">£{activePrice.toFixed(2)}</span>
+                    <span className="text-3xl font-black text-slate-900">£{activePrice.toFixed(2)}</span>
                     {activeOriginalPrice && (
-                      <span className="text-base text-slate-500 line-through font-medium">
+                      <span className="text-base text-slate-400 line-through font-medium">
                         £{activeOriginalPrice.toFixed(2)}
                       </span>
                     )}
@@ -252,13 +245,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </div>
 
                 <div className="text-right">
-                  <span className="text-[10px] text-emerald-400 font-black uppercase">0% Commission</span>
-                  <span className="block text-[11px] text-slate-400">VAT Receipt Provided</span>
+                  <span className="text-[10px] text-emerald-700 font-black uppercase block">0% Commission</span>
+                  <span className="text-[11px] text-slate-500 font-medium">VAT Receipt Provided</span>
                 </div>
               </div>
 
               {/* Description */}
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
                 {product.description}
               </p>
 
@@ -266,10 +259,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               {product.storageOptions && product.storageOptions.length > 0 && (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="block text-xs font-bold text-slate-300">
+                    <label className="block text-xs font-bold text-slate-700">
                       Select Memory Capacity:
                     </label>
-                    <span className="text-[11px] text-emerald-400 font-extrabold">
+                    <span className="text-[11px] text-emerald-700 font-black">
                       Separate Storage Pricing
                     </span>
                   </div>
@@ -283,16 +276,16 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         <button
                           key={storage}
                           onClick={() => setSelectedStorage(storage)}
-                          className={`p-3 rounded-xl text-left flex flex-col justify-between border transition-all ${
+                          className={`p-3 rounded-xl text-left flex flex-col justify-between border transition-all cursor-pointer ${
                             isSelected
-                              ? 'bg-emerald-500/10 border-emerald-400 text-white shadow-lg shadow-emerald-950'
-                              : 'bg-[#090E1B] border-slate-800 text-slate-300 hover:border-slate-700 hover:text-white'
+                              ? 'bg-slate-900 border-slate-900 text-white shadow-sm'
+                              : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300'
                           }`}
                         >
-                          <span className={`text-xs font-black ${isSelected ? 'text-emerald-400' : 'text-slate-200'}`}>
+                          <span className={`text-xs font-black ${isSelected ? 'text-white' : 'text-slate-900'}`}>
                             {storage}
                           </span>
-                          <span className="text-[11px] font-extrabold text-slate-400 mt-1">
+                          <span className={`text-[11px] font-extrabold mt-1 ${isSelected ? 'text-emerald-400' : 'text-emerald-700'}`}>
                             £{optPrice.toFixed(2)}
                           </span>
                         </button>
@@ -305,17 +298,17 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               {/* Specifications Breakdown */}
               {product.specs && Object.keys(product.specs).length > 0 && (
                 <div className="space-y-2">
-                  <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-400">
+                  <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-500">
                     Key Specifications
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                     {Object.entries(product.specs).map(([key, value]) => (
                       <div
                         key={key}
-                        className="p-2.5 rounded-xl bg-[#090E1B] border border-slate-800 flex flex-col"
+                        className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col"
                       >
                         <span className="text-[10px] text-slate-500 font-bold uppercase">{key}</span>
-                        <span className="text-slate-200 font-semibold mt-0.5">{value}</span>
+                        <span className="text-slate-900 font-extrabold mt-0.5">{value}</span>
                       </div>
                     ))}
                   </div>
@@ -324,20 +317,20 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             </div>
 
             {/* Actions: Quantity & Add to Cart / WhatsApp */}
-            <div className="pt-4 border-t border-slate-800 space-y-3">
+            <div className="pt-4 border-t border-slate-100 space-y-3">
               <div className="flex items-center gap-3">
                 {/* Quantity selector */}
-                <div className="flex items-center bg-[#090E1B] border border-slate-800 rounded-xl p-1">
+                <div className="flex items-center bg-slate-50 border border-slate-200 rounded-xl p-1">
                   <button
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    className="p-2 hover:bg-slate-800 rounded-lg text-slate-300 transition-colors"
+                    className="p-2 hover:bg-slate-200 rounded-lg text-slate-700 transition-colors cursor-pointer"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
-                  <span className="w-8 text-center text-sm font-black text-white">{quantity}</span>
+                  <span className="w-8 text-center text-sm font-black text-slate-900">{quantity}</span>
                   <button
                     onClick={() => setQuantity((q) => q + 1)}
-                    className="p-2 hover:bg-slate-800 rounded-lg text-slate-300 transition-colors"
+                    className="p-2 hover:bg-slate-200 rounded-lg text-slate-700 transition-colors cursor-pointer"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -346,10 +339,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 {/* Add to Cart Button */}
                 <button
                   onClick={handleAddToCart}
-                  className={`flex-1 py-3.5 px-6 rounded-xl font-extrabold text-sm transition-all flex items-center justify-center gap-2 shadow-lg ${
+                  className={`flex-1 py-3.5 px-6 rounded-xl font-black text-sm transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer ${
                     isAdded
-                      ? 'bg-emerald-400 text-slate-950'
-                      : 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-emerald-950/50'
+                      ? 'bg-emerald-700 text-white'
+                      : 'bg-emerald-600 hover:bg-emerald-500 text-white'
                   }`}
                 >
                   {isAdded ? (
@@ -373,9 +366,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 )}`}
                 target="_blank"
                 rel="noreferrer"
-                className="w-full py-2.5 px-4 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 text-emerald-400 font-extrabold text-xs flex items-center justify-center gap-2 transition-colors"
+                className="w-full py-2.5 px-4 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-emerald-700 font-extrabold text-xs flex items-center justify-center gap-2 transition-colors"
               >
-                <MessageCircle className="w-4 h-4 fill-emerald-400 text-slate-900" />
+                <MessageCircle className="w-4 h-4 text-emerald-600" />
                 <span>Ask Glasgow Counter on WhatsApp</span>
               </a>
             </div>

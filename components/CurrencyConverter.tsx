@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Currency } from '@/lib/types';
-import { ArrowRightLeft, Lock, ShieldCheck, MapPin } from 'lucide-react';
+import { Lock, ShieldCheck } from 'lucide-react';
 
 interface CurrencyConverterProps {
   currencies: Currency[];
@@ -25,45 +25,45 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = ({ currencies
   };
 
   return (
-    <div className="bg-[#111827] border border-slate-700/80 rounded-2xl p-5 sm:p-7 shadow-2xl relative overflow-hidden">
-      <div className="flex items-center justify-between mb-4">
+    <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 pb-4 border-b border-slate-100">
         <div>
-          <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-800/60">
-            Instant Rate Calculator
+          <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+            Instant Calculator
           </span>
-          <h3 className="text-xl font-black text-white mt-1">Reserve Currency Online</h3>
+          <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1.5">Reserve Foreign Currency</h3>
         </div>
-        <div className="text-right text-[11px] text-slate-400">
-          Rate: <strong className="text-emerald-400">1 GBP = {selectedCurrency.sellRate} {selectedCurrency.code}</strong>
+        <div className="text-left sm:text-right text-xs text-slate-500 font-semibold bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200/80">
+          Exchange Rate: <span className="text-slate-900 font-bold">1 GBP = {selectedCurrency.sellRate} {selectedCurrency.code}</span>
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-5">
         {/* You Pay (GBP) */}
         <div>
-          <label className="block text-xs font-bold text-slate-300 mb-1.5">You Pay (GBP)</label>
+          <label className="block text-xs font-bold text-slate-700 mb-1.5">You Pay (GBP)</label>
           <div className="relative flex items-center">
-            <span className="absolute left-3.5 text-slate-400 font-extrabold text-sm">£</span>
+            <span className="absolute left-4 text-slate-500 font-black text-base">£</span>
             <input
               type="number"
               value={amountGbp}
               onChange={(e) => setAmountGbp(e.target.value)}
-              className="w-full pl-8 pr-20 py-3 bg-[#0A0F1D] border border-slate-700/80 rounded-xl text-lg font-black text-white focus:outline-none focus:border-emerald-400"
+              className="w-full pl-9 pr-20 py-3.5 bg-slate-50 border border-slate-300 rounded-2xl text-xl font-black text-slate-900 focus:outline-none focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
               placeholder="500"
               min="10"
             />
-            <span className="absolute right-3 text-xs font-black text-slate-400 uppercase">GBP</span>
+            <span className="absolute right-4 text-xs font-black text-slate-400 uppercase tracking-wider">GBP</span>
           </div>
         </div>
 
         {/* You Receive (Foreign Currency) */}
         <div>
-          <label className="block text-xs font-bold text-slate-300 mb-1.5">You Receive (Est.)</label>
+          <label className="block text-xs font-bold text-slate-700 mb-1.5">You Receive (Estimated)</label>
           <div className="relative flex items-center">
             <select
               value={selectedCode}
               onChange={(e) => setSelectedCode(e.target.value)}
-              className="absolute left-2 py-1.5 px-2 bg-slate-800 border border-slate-700 rounded-lg text-xs font-bold text-emerald-300 focus:outline-none"
+              className="absolute left-2.5 py-2 px-3 bg-white border border-slate-300 rounded-xl text-xs font-black text-slate-800 focus:outline-none shadow-xs cursor-pointer"
             >
               {currencies.map((c) => (
                 <option key={c.code} value={c.code}>
@@ -76,34 +76,34 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = ({ currencies
               type="text"
               readOnly
               value={calculatedForeign.toLocaleString(undefined, { maximumFractionDigits: 2 })}
-              className="w-full pl-28 pr-16 py-3 bg-[#0A0F1D] border border-slate-700/80 rounded-xl text-lg font-black text-emerald-400 focus:outline-none"
+              className="w-full pl-36 pr-16 py-3.5 bg-emerald-50/50 border border-emerald-200 rounded-2xl text-xl font-black text-emerald-700 focus:outline-none"
             />
-            <span className="absolute right-3 text-xs font-black text-slate-400 uppercase">{selectedCode}</span>
+            <span className="absolute right-4 text-xs font-black text-emerald-800 uppercase tracking-wider">{selectedCode}</span>
           </div>
         </div>
 
-        <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-[11px] text-slate-300 space-y-1">
+        <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1.5">
           <div className="flex justify-between">
-            <span>Commission Fee:</span>
-            <strong className="text-emerald-400">£0.00 (Zero Commission)</strong>
+            <span className="font-medium">Commission Fee:</span>
+            <strong className="text-emerald-700 font-extrabold">£0.00 (0% Hidden Markup)</strong>
           </div>
           <div className="flex justify-between">
-            <span>Pickup Location:</span>
-            <strong className="text-slate-200">22 Maxwell Rd, Glasgow, G41 1QE</strong>
+            <span className="font-medium">Pickup Branch:</span>
+            <strong className="text-slate-900 font-bold">22 Maxwell Rd, Glasgow, G41 1QE</strong>
           </div>
         </div>
 
         <button
           onClick={handleReserve}
-          className="w-full py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm rounded-xl transition-all shadow-lg shadow-emerald-950/40 flex items-center justify-center gap-2"
+          className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 active:scale-98 cursor-pointer"
         >
           <Lock className="w-4 h-4" />
-          <span>Lock Rate & Get Free Voucher</span>
+          <span>Lock Rate & Get Free Counter Voucher</span>
         </button>
 
-        <p className="text-[10px] text-center text-slate-500 flex items-center justify-center gap-1">
-          <ShieldCheck className="w-3 h-3 text-emerald-400" />
-          No prepayment required online. Pay cash or card at counter upon pickup.
+        <p className="text-[11px] text-center text-slate-500 flex items-center justify-center gap-1.5 font-medium">
+          <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+          No upfront payment needed. Pay cash or card at Glasgow counter upon pickup.
         </p>
       </div>
     </div>
@@ -111,4 +111,3 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = ({ currencies
 };
 
 export default CurrencyConverter;
-
