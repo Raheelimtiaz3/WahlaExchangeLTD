@@ -140,6 +140,26 @@ export const CurrencyExchangeSection: React.FC<CurrencyExchangeSectionProps> = (
             {/* Currency Select */}
             <div>
               <label className="block text-xs font-bold text-slate-600 mb-1">Select Foreign Currency</label>
+              
+              {/* Quick Currency Chips for 1-click selection */}
+              <div className="grid grid-cols-4 gap-1.5 mb-2.5">
+                {currencies.slice(0, 8).map((c) => (
+                  <button
+                    key={c.code}
+                    type="button"
+                    onClick={() => setSelectedCurrencyCode(c.code)}
+                    className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 cursor-pointer border ${
+                      selectedCurrency.code === c.code
+                        ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
+                        : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
+                    }`}
+                  >
+                    <img src={c.flag} alt={c.code} className="w-3.5 h-2.5 rounded-2xs object-cover" />
+                    <span>{c.code}</span>
+                  </button>
+                ))}
+              </div>
+
               <select
                 value={selectedCurrency.code}
                 onChange={(e) => setSelectedCurrencyCode(e.target.value)}
@@ -147,7 +167,7 @@ export const CurrencyExchangeSection: React.FC<CurrencyExchangeSectionProps> = (
               >
                 {currencies.map((c) => (
                   <option key={c.code} value={c.code}>
-                    {c.code} — {c.name} (Live NetDania: {c.sellRate})
+                    {c.code} — {c.name} (Live NetDania: {exchangeMode === 'sell' ? c.sellRate : c.buyRate})
                   </option>
                 ))}
               </select>

@@ -28,7 +28,7 @@ import { MessageCircle } from 'lucide-react';
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState<ActivePageTab>('home');
   const [liveCurrencies, setLiveCurrencies] = useState<Currency[]>(INITIAL_CURRENCIES);
-  const [ratesLastUpdated, setRatesLastUpdated] = useState<string>('');
+  const [ratesLastUpdated, setRatesLastUpdated] = useState<string>('Live (NetDania Synced)');
   const [isRatesLoading, setIsRatesLoading] = useState<boolean>(false);
 
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
