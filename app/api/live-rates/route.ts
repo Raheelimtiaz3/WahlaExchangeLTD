@@ -1,18 +1,32 @@
 import { NextResponse } from 'next/server';
 
-export const revalidate = 10; // Cache for 10 seconds
+export const dynamic = 'force-dynamic';
+
+// In-memory cache for immediate responses
+let cachedData: {
+  timestamp: number;
+  data: any;
+} | null = null;
+
+const CACHE_TTL_MS = 15000; // 15 seconds cache
 
 export async function GET() {
+  const now = Date.now();
+
+  // Return cached result immediately if valid
+  if (cachedData && now - cachedData.timestamp < CACHE_TTL_MS) {
+    return NextResponse.json(cachedData.data);
+  }
+
   let rates: Record<string, number> = {};
   let isLive = false;
 
   try {
-    // Fetch live market FX rates against GBP with 5s timeout
+    // Fast fetch with 2s timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    const timeoutId = setTimeout(() => controller.abort(), 2500);
 
     const response = await fetch('https://open.er-api.com/v6/latest/GBP', {
-      next: { revalidate: 10 },
       signal: controller.signal,
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -28,11 +42,10 @@ export async function GET() {
       }
     }
   } catch (error) {
-    console.warn('Live rate external fetch warning (using baseline market values):', error);
+    console.warn('Live rate external fetch notice (serving instant baseline rates):', error);
   }
 
   // Calculate Glasgow Counter Bureau Rates based on live interbank Forex from NetDania market feed
-  // 1 GBP = X Foreign Currency
   const usdRate = rates['USD'] || 1.305;
   const eurRate = rates['EUR'] || 1.185;
   const aedRate = rates['AED'] || 4.79;
@@ -213,7 +226,7 @@ export async function GET() {
     },
   ];
 
-  return NextResponse.json({
+  const payload = {
     success: true,
     isLive,
     source: 'NetDania Forex Live Market Feed',
@@ -221,6 +234,14 @@ export async function GET() {
     lastUpdated: new Date().toISOString(),
     baseCurrency: 'GBP',
     currencies: liveCurrencies,
-  });
+  };
+
+  cachedData = {
+    timestamp: now,
+    data: payload,
+  };
+
+  return NextResponse.json(payload);
 }
+
 
