@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
+import { RatesTicker } from '@/components/RatesTicker';
 import { HeroSection } from '@/components/HeroSection';
 import { MoneyRemittanceSection } from '@/components/MoneyRemittanceSection';
 import { RemittanceModal } from '@/components/RemittanceModal';
@@ -26,6 +27,10 @@ import { MessageCircle } from 'lucide-react';
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState<ActivePageTab>('home');
+  const [liveCurrencies, setLiveCurrencies] = useState<Currency[]>(INITIAL_CURRENCIES);
+  const [ratesLastUpdated, setRatesLastUpdated] = useState<string>('');
+  const [isRatesLoading, setIsRatesLoading] = useState<boolean>(false);
+
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
     if (typeof window !== 'undefined') {
       try {
@@ -48,6 +53,50 @@ export default function HomePage() {
 
   // Currency Reserve Modal state
   const [selectedReserveCurrency, setSelectedReserveCurrency] = useState<Currency | null>(null);
+
+  // Fetch live rates from NetDania route
+  const fetchLiveRates = React.useCallback(async () => {
+    setIsRatesLoading(true);
+    try {
+      const res = await fetch('/api/live-rates');
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.currencies && data.currencies.length > 0) {
+          setLiveCurrencies(data.currencies);
+          setRatesLastUpdated(new Date().toLocaleTimeString());
+        }
+      }
+    } catch (e) {
+      console.warn('Live rates sync error:', e);
+    } finally {
+      setIsRatesLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    let isCancelled = false;
+    const loadRates = async () => {
+      try {
+        const res = await fetch('/api/live-rates');
+        if (res.ok && !isCancelled) {
+          const data = await res.json();
+          if (data && data.currencies && data.currencies.length > 0) {
+            setLiveCurrencies(data.currencies);
+            setRatesLastUpdated(new Date().toLocaleTimeString());
+          }
+        }
+      } catch (e) {
+        console.warn('Live rates init error:', e);
+      }
+    };
+
+    loadRates();
+    const interval = setInterval(loadRates, 30000);
+    return () => {
+      isCancelled = true;
+      clearInterval(interval);
+    };
+  }, []);
 
   // Sync cart to localStorage
   useEffect(() => {
@@ -125,6 +174,9 @@ export default function HomePage() {
         onOpenRemittanceModal={() => handleOpenRemittance()}
       />
 
+      {/* Live NetDania Forex Ticker */}
+      <RatesTicker currencies={liveCurrencies} />
+
       {/* View Router / Homepage Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
         
@@ -144,9 +196,13 @@ export default function HomePage() {
               onOpenRemittanceModal={(gbp, corridor) => handleOpenRemittance(gbp, corridor)}
             />
 
-            {/* 3. Currency Exchange (WAHLA FX) */}
+            {/* 3. Currency Exchange (WAHLA FX) - Live NetDania Sync */}
             <CurrencyExchangeSection
               onReserveCurrency={(curr) => setSelectedReserveCurrency(curr)}
+              initialCurrencies={liveCurrencies}
+              lastUpdated={ratesLastUpdated}
+              isLoading={isRatesLoading}
+              onRefreshRates={fetchLiveRates}
             />
 
             {/* 4. Security & Trust Section */}
@@ -178,6 +234,10 @@ export default function HomePage() {
         {activeTab === 'currency-exchange' && (
           <CurrencyExchangeSection
             onReserveCurrency={(curr) => setSelectedReserveCurrency(curr)}
+            initialCurrencies={liveCurrencies}
+            lastUpdated={ratesLastUpdated}
+            isLoading={isRatesLoading}
+            onRefreshRates={fetchLiveRates}
           />
         )}
 
@@ -263,3 +323,4 @@ export default function HomePage() {
     </div>
   );
 }
+
